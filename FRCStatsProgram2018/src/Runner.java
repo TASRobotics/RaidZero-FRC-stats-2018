@@ -1,0 +1,135 @@
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.Timer;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class Runner {
+	
+	static StatsDatabase2018 database;
+	
+    public static void main(String[]args) throws IOException{
+    	//open the database, if does not exist, then create new database
+    	ReadObject obj = new ReadObject();
+    	try {
+    		database = obj.deserialzeCompetition("StatsDatabase2018.data");
+    	} catch(Exception e){
+    		database = new StatsDatabase2018();
+    	}
+        
+    	
+        String[] buttons = {"New", "Open"};
+        int new0_open1 = JOptionPane.showOptionDialog(null, "Create new competition"
+        		+ " or open existing competition.", "Select", JOptionPane.INFORMATION_MESSAGE, 
+        		0, null, buttons, buttons[1]);
+        
+        if (new0_open1 == 0) { //create new competition
+        	JFrame setupFrame = new JFrame("Setup for New Competition");
+        	setupFrame.setSize(500, 165);
+        	setupFrame.setLayout(new BorderLayout());
+        	setupFrame.setLocationRelativeTo(null); //this will center frame
+        	setupFrame.setResizable(false);
+        	
+        	JPanel setupPanel = new JPanel();
+        	
+        	//competition name
+            setupPanel.add(new JLabel("Comp. Name: "));
+            JTextField comp_name = new JTextField(30);
+            setupPanel.add(comp_name);
+            
+            //blue alliance URL
+            setupPanel.add(new JLabel("\nBlue Alliance URL: "));
+            JTextField url = new JTextField(30);
+            setupPanel.add(url);
+            
+            //choose input directory
+            setupPanel.add(new JLabel("Input Directory: "));          
+            JLabel directory = new JLabel("");
+            setupPanel.add(directory);
+            JButton button_choose = new JButton("Choose");
+            button_choose.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) { 
+					//open file chooser
+					JFileChooser fc = new JFileChooser();
+				    fc.setCurrentDirectory(new java.io.File("user.home"));
+				    System.out.println("here");
+				    fc.setDialogTitle("Select Directory");
+				    fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				    fc.setAcceptAllFileFilterUsed(false); //disable the "All files" option
+				    int result = fc.showOpenDialog(setupPanel);
+				    if (result == JFileChooser.APPROVE_OPTION) {
+				    	File selectedFile = fc.getSelectedFile();
+				    	directory.setText(selectedFile.getAbsolutePath());
+				    }
+				}
+            });
+            setupPanel.add(button_choose);
+            
+            //OK button
+            JButton button_ok = new JButton("OK");
+            button_ok.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) { 
+					if(directory.getText().equals("")) {
+						System.out.print("Choose directory.");
+					}else{
+						Competition comp = new Competition(comp_name.getText(), url.getText(), directory.getText());
+						database.addCompetition(comp);
+				        runTheProgram(comp);
+					}
+				}
+            });            
+            setupPanel.add(button_ok);
+            
+            //add panel to frame
+            setupFrame.add(setupPanel);
+            setupFrame.setVisible(true);  
+            
+        }else if (new0_open1 == 1) { //open previously saved competition
+        	JFrame chooseCompFrame = new JFrame("Select Competition");
+        	chooseCompFrame.setSize(500, 300);
+        	String[] competitions = new String[database.competitions.size()];
+        	for(int i = 0; i < competitions.length; i++)
+        		competitions[i] = database.competitions.get(i).name; 
+        	JComboBox menu = new JComboBox(competitions); //drop-down menu
+        	menu.setSelectedIndex(competitions.length-1);
+        	
+        	//OK button
+        	JButton button_ok = new JButton("OK");
+        	button_ok.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					runTheProgram(database.getCompetition((String)menu.getSelectedItem()));					
+				}
+        	});
+        	
+        	//add menu to frame
+        	chooseCompFrame.add(menu);
+        	chooseCompFrame.setVisible(true);
+        }
+    }
+    
+    public static void runTheProgram(Competition competition){
+    	
+        UserInterface ui = new UserInterface(competition);
+        ui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        Timer timer = new Timer();     
+        timer.schedule(new ContinueProcessingData(competition), 0, 5000); //retrieve files every 5 sec 
+        
+        ui.addWindowListener(new java.awt.event.WindowAdapter() {
+        	@Override
+        	public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+               //TODO save 	
+            }
+        });
+    }
+}
