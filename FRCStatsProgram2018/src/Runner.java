@@ -98,7 +98,7 @@ public class Runner {
         		JOptionPane.showMessageDialog(null, "No previous competitions.", "Error", JOptionPane.ERROR_MESSAGE);
         	}else {
 	        	JFrame chooseCompFrame = new JFrame("Select Competition");
-	        	chooseCompFrame.setSize(500, 300);
+	        	chooseCompFrame.setSize(500, 150);
 	        	chooseCompFrame.setLayout(new BorderLayout());
 	        	chooseCompFrame.setLocationRelativeTo(null); //this will center frame
 	        	chooseCompFrame.setResizable(false);

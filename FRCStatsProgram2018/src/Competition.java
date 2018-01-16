@@ -19,7 +19,9 @@ public class Competition implements Serializable {
 	
 	public void setup() {
 		//TODO web scrape robots
+		
 		//TODO web scrape match schedule
+		
 	}
 	
 	public boolean botExists(String t) {

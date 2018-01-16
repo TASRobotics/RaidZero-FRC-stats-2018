@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Robot implements Serializable {
+	
     String name;
     transient BufferedImage photo;
     ArrayList<int[]> data;

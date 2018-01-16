@@ -6,9 +6,8 @@ import java.util.Scanner;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-
 import org.apache.commons.io.FileUtils;
-
+//TODO not yet tested
 public class ContinueProcessingData extends TimerTask implements Serializable
 {
 	Competition competition;
