@@ -17,4 +17,5 @@ public class Match {
 		//team#, A scale, A switch, T switch, T scale, exchange zone, climb
 		for(int i = 0; i < 6; i++) if(data[i][0] == d[0]) data[i] = d;
 	}
+	
 }

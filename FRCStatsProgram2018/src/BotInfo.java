@@ -8,5 +8,4 @@ public class BotInfo extends JFrame {
 		competition = c;
 		robot = r;
 	}
-	
 }

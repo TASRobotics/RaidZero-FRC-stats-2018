@@ -8,7 +8,6 @@ public class WriteObject {
     	
         FileOutputStream fout = null;
         ObjectOutputStream oos = null;
-        
         try {
             fout = new FileOutputStream(fileName);
             oos = new ObjectOutputStream(fout);

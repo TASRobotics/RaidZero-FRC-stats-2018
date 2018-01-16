@@ -13,5 +13,4 @@ public class StatsDatabase2018 implements Serializable {
 		for (Competition comp: competitions) if (comp.name.equals(name)) return comp;		
 		return null;
 	}
-	
 }

@@ -6,7 +6,6 @@ public class ReadObject {
 	
     @SuppressWarnings("resource")
 	public StatsDatabase2018 deserializeCompetition(String filename) {
-    	
         StatsDatabase2018 database = null;
         FileInputStream f_in = null;
         ObjectInputStream o_in = null;
@@ -18,8 +17,7 @@ public class ReadObject {
         } catch (Exception ex){
             //JOptionPane.showMessageDialog(null, "Database does not exist.", "Error", JOptionPane.INFORMATION_MESSAGE);
             return null;
-        } 
-        
+        }     
         return database;        
     }
 }

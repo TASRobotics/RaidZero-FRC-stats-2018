@@ -19,7 +19,7 @@ public class Runner {
 	static String directory_path;
 	
     public static void main(String[]args) throws IOException{
-    	//open the database, if does not exist, then create new database
+    	//open the database, if does not exist, then create new Database
     	ReadObject obj = new ReadObject();
     	if(obj.deserializeCompetition("StatsDatabase2018.data") == null) {
     		database = new StatsDatabase2018();

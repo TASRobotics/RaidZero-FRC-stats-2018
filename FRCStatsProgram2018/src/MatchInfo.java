@@ -8,4 +8,5 @@ public class MatchInfo extends JFrame {
 		competition = c;
 		match_number = m;
 	}
+	
 }
