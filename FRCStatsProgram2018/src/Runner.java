@@ -16,17 +16,17 @@ import javax.swing.JTextField;
 public class Runner {
 	
 	static StatsDatabase2018 database;
+	static String directory_path;
 	
     public static void main(String[]args) throws IOException{
     	//open the database, if does not exist, then create new database
     	ReadObject obj = new ReadObject();
-    	try {
-    		database = obj.deserialzeCompetition("StatsDatabase2018.data");
-    	} catch(Exception e){
+    	if(obj.deserializeCompetition("StatsDatabase2018.data") == null) {
     		database = new StatsDatabase2018();
+    	}else {
+    		database = obj.deserializeCompetition("StatsDatabase2018.data");
     	}
-        
-    	
+    		
         String[] buttons = {"New", "Open"};
         int new0_open1 = JOptionPane.showOptionDialog(null, "Create new competition"
         		+ " or open existing competition.", "Select", JOptionPane.INFORMATION_MESSAGE, 
@@ -61,14 +61,14 @@ public class Runner {
 					//open file chooser
 					JFileChooser fc = new JFileChooser();
 				    fc.setCurrentDirectory(new java.io.File("user.home"));
-				    System.out.println("here");
-				    fc.setDialogTitle("Select Directory");
+				    fc.setDialogTitle("Select Input Directory");
 				    fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				    fc.setAcceptAllFileFilterUsed(false); //disable the "All files" option
 				    int result = fc.showOpenDialog(setupPanel);
 				    if (result == JFileChooser.APPROVE_OPTION) {
 				    	File selectedFile = fc.getSelectedFile();
 				    	directory.setText(selectedFile.getAbsolutePath());
+				    	directory_path = directory.getText();
 				    }
 				}
             });
@@ -94,26 +94,38 @@ public class Runner {
             setupFrame.setVisible(true);  
             
         }else if (new0_open1 == 1) { //open previously saved competition
-        	JFrame chooseCompFrame = new JFrame("Select Competition");
-        	chooseCompFrame.setSize(500, 300);
-        	String[] competitions = new String[database.competitions.size()];
-        	for(int i = 0; i < competitions.length; i++)
-        		competitions[i] = database.competitions.get(i).name; 
-        	JComboBox menu = new JComboBox(competitions); //drop-down menu
-        	menu.setSelectedIndex(competitions.length-1);
-        	
-        	//OK button
-        	JButton button_ok = new JButton("OK");
-        	button_ok.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					runTheProgram(database.getCompetition((String)menu.getSelectedItem()));					
-				}
-        	});
-        	
-        	//add menu to frame
-        	chooseCompFrame.add(menu);
-        	chooseCompFrame.setVisible(true);
+        	if(database.competitions.size() == 0) {
+        		JOptionPane.showMessageDialog(null, "No previous competitions.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}else {
+	        	JFrame chooseCompFrame = new JFrame("Select Competition");
+	        	chooseCompFrame.setSize(500, 300);
+	        	chooseCompFrame.setLayout(new BorderLayout());
+	        	chooseCompFrame.setLocationRelativeTo(null); //this will center frame
+	        	chooseCompFrame.setResizable(false);
+	        	
+	        	//drop down menu
+	        	JPanel panel = new JPanel();
+	        	String[] competitions = new String[database.competitions.size()];
+	        	for(int i = 0; i < competitions.length; i++)
+	        		competitions[i] = database.competitions.get(i).name; 
+	        	JComboBox<String> menu = new JComboBox<String>(competitions);
+	        	menu.setSelectedIndex(competitions.length-1);
+	        	panel.add(menu);
+	        	
+	        	//OK button
+	        	JButton button_ok = new JButton("OK");
+	        	button_ok.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						runTheProgram(database.getCompetition((String)menu.getSelectedItem()));					
+					}
+	        	});
+	        	panel.add(button_ok);
+	        	
+	        	//add menu to frame
+	        	chooseCompFrame.add(panel);
+	        	chooseCompFrame.setVisible(true);
+        	}
         }
     }
     
@@ -128,7 +140,16 @@ public class Runner {
         ui.addWindowListener(new java.awt.event.WindowAdapter() {
         	@Override
         	public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-               //TODO save 	
+        		String fileName = "StatsDatabase2018.data";
+                WriteObject obj = new WriteObject();
+                try{
+                	obj.serializeDatabase(database, fileName);
+                    System.exit(0);
+                }catch(Exception e){
+                	System.out.println(e);
+                	JOptionPane.showMessageDialog(null,"Error in writing object.");  
+                }
+                System.exit(0);            	
             }
         });
     }

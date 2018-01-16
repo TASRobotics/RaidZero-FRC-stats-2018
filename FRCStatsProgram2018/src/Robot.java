@@ -13,7 +13,6 @@ public class Robot implements Serializable {
     double avg_e_z;
     double avg_c;
     
-    
     public Robot(String t){
         name = t;
         photo = null;
