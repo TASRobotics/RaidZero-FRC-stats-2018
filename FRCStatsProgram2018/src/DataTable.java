@@ -31,6 +31,7 @@ public class DataTable extends JFrame{
             data[i][4] = competition.robots.get(i).avg_t_switch;
             data[i][5] = competition.robots.get(i).avg_e_z;
             data[i][6] = competition.robots.get(i).avg_c;
+            //delete this comment later
         }    
         
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
