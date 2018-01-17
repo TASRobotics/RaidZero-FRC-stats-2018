@@ -7,7 +7,7 @@ public class Competition implements Serializable {
 	String url;
 	ArrayList<Match> matches;
 	ArrayList<Robot> robots;
-	
+
 	public Competition(String n, String u, String d) {
 		name = n;
 		url = u;
@@ -16,19 +16,23 @@ public class Competition implements Serializable {
 		matches = new ArrayList<Match>();
 		setup();
 	}
-	
+
 	public void setup() {
-		//TODO web scrape robots		
-		//TODO web scrape match schedule
+		// TODO web scrape robots
+		// TODO web scrape match schedule
 	}
-	
+
 	public boolean botExists(String t) {
-		for (Robot bot: robots) if(bot.name.equals(t)) return true;
+		for (Robot bot : robots)
+			if (bot.name.equals(t))
+				return true;
 		return false;
 	}
-	
+
 	public Robot getBot(String t) {
-		for(Robot bot: robots) if(bot.name.equals(t)) return bot;
+		for (Robot bot : robots)
+			if (bot.name.equals(t))
+				return bot;
 		return null;
 	}
 }
