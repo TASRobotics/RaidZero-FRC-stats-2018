@@ -4,8 +4,8 @@ public class BotInfo extends JFrame {
 	Competition competition;
 	Robot robot;
 	
-	public BotInfo(Competition c, Robot r) {
+	public BotInfo(Competition c, String t) {
 		competition = c;
-		robot = r;
+		robot = competition.getBot(t);
 	}
 }

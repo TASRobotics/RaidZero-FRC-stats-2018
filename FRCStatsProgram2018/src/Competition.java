@@ -23,12 +23,26 @@ public class Competition implements Serializable {
 	}
 	
 	public boolean botExists(String t) {
-		for (Robot bot: robots) if(bot.name.equals(t)) return true;
+		for (Robot bot: robots)
+			if(bot.name.equals(t)) 
+				return true;
 		return false;
 	}
 	
 	public Robot getBot(String t) {
-		for(Robot bot: robots) if(bot.name.equals(t)) return bot;
+		for(Robot bot: robots) 
+			if(bot.name.equals(t)) 
+				return bot;
 		return null;
+	}
+
+	public Match getMatch(int match_number) {
+		try {
+		return matches.get(match_number);
+		}
+		catch (Exception Andrew) {
+			System.out.print("matches: .getMatch " + match_number);
+			return new Match(1, new int[6]);
+		}
 	}
 }

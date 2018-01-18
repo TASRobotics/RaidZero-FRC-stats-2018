@@ -18,4 +18,17 @@ public class Match {
 		for(int i = 0; i < 6; i++) if(data[i][0] == d[0]) data[i] = d;
 	}
 	
+	public String returnData() {
+		String s = "Match#: " + match_number + "\n\n";
+		for(int i = 0; i < 6; i++){
+			s += "Team#: " + data[i][0] + "\n";
+			s += "AScale#: " + data[i][1] + "\n";
+			s += "ASwitch#: " + data[i][2] + "\n";
+			s += "TScale#: " + data[i][3] + "\n";
+			s += "TSwitch#: " + data[i][4] + "\n";
+			s += "Exchange Zone: " + data[i][5] + "\n";
+			s += "Climb: " + data[i][6] + "\n\n";
+		}
+		return s;
+	}
 }

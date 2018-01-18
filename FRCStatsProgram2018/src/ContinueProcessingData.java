@@ -22,7 +22,6 @@ public class ContinueProcessingData extends TimerTask implements Serializable
     public void run(){
     	
         //photos
-    	System.out.println(directory_path);
         File directory = new File(directory_path);
         BufferedImage img = null;
         try{
@@ -66,11 +65,14 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	            csv_filepath = directory_path + "\\Blue.csv"; blue_red = "Blue";
 	        }
 	        
-	        try {
+	        try 
+	        {
 	        	File file = new File(csv_filepath);
 	        	Scanner input = new Scanner(file);
 	        	ArrayList<String[]> data = new ArrayList<String[]>();
-	        	while (input.hasNext()) {
+	        	
+	        	while (input.hasNext()) 
+	        	{
 	        		String row = input.next(); 
 	        		String[] values = row.split(",");
 	        		data.add(values);
@@ -78,7 +80,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	        	input.close();
 	        	
 	        	//input match data
-	        	for(int i = 2; i < 5; i++) {
+	        	for(int i = 2; i < 5; i++) 
+	        	{
 	        		int[] match_data = new int[7];
 	        		for(int j = 0; j < 7; j++) 
 	        			match_data[j] = Integer.parseInt(data.get(j+2)[i]);   		
@@ -86,7 +89,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	        	}
 	        	
 	        	//input robot data
-	        	for(int i = 2; i < 5; i++) {
+	        	for(int i = 2; i < 5; i++) 
+	        	{
 	        		int[] bot_data = new int[7];
 	        		bot_data[0] = Integer.parseInt(data.get(0)[1]);
 	        		for(int j = 1; j < 7; j++)
