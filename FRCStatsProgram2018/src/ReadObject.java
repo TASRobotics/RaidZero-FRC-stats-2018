@@ -15,7 +15,7 @@ public class ReadObject {
             o_in = new ObjectInputStream(f_in);
             database = (StatsDatabase2018) o_in.readObject();
         } catch (Exception ex){
-            //JOptionPane.showMessageDialog(null, "Database does not exist.", "Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Database does not exist.", "Error", JOptionPane.INFORMATION_MESSAGE);
             return null;
         }     
         return database;        
