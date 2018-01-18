@@ -19,7 +19,7 @@ public class Robot implements Serializable {
         avg_a_scale = avg_a_switch = avg_t_scale = avg_t_switch = avg_e_z = avg_c = 0;
         data = new ArrayList<int[]>();
     }
-    
+     
     public void inputData(int[] d){
     	//match#, A scale, A switch, T scale, T switch, exchange zone, climb
     	data.add(d);

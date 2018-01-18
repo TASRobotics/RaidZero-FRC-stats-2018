@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 //TODO test
+
 public class ContinueProcessingData extends TimerTask implements Serializable
 {
 	Competition competition;

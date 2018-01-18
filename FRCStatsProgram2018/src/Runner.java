@@ -26,7 +26,7 @@ public class Runner {
     	}else {
     		database = obj.deserializeCompetition("StatsDatabase2018.data");
     	}
-    		
+    		 
         String[] buttons = {"New", "Open"};
         int new0_open1 = JOptionPane.showOptionDialog(null, "Create new competition"
         		+ " or open existing competition.", "Select", JOptionPane.INFORMATION_MESSAGE, 

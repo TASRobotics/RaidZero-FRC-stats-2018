@@ -21,8 +21,7 @@ public class MatchInfo extends JFrame {
         paint();
 	}
 	
-    public void paint()
-    {
+    public void paint(){
         try{
             draw();
         }catch(Exception exception){
@@ -30,19 +29,18 @@ public class MatchInfo extends JFrame {
             System.out.println("ERROR");
         }
     }
-    public void draw()
-    {
+    
+    public void draw() {
        Match match = competition.getMatch(match_number);
        String s = match.returnData(); 
        final JTextArea textArea = new JTextArea();
        textArea.setText(s);
        textArea.setEditable(false);
-       textArea.setFont(new Font("Arial",Font.BOLD, 20));      
-       JScrollPane scrollPane = new JScrollPane(textArea);       
+       textArea.setFont(new Font("Arial",Font.BOLD, 20));    
+       JScrollPane scrollPane = new JScrollPane(textArea);      
        JPanel contentPane = new JPanel();
        contentPane.setLayout(new BorderLayout());
-       contentPane.add(scrollPane, BorderLayout.CENTER);     
+       contentPane.add(scrollPane, BorderLayout.CENTER);
        setContentPane(contentPane);
-       
     }
 }

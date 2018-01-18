@@ -10,7 +10,7 @@ public class ReadObject {
         FileInputStream f_in = null;
         ObjectInputStream o_in = null;
         
-        try {
+        try { 
             f_in = new FileInputStream(filename);
             o_in = new ObjectInputStream(f_in);
             database = (StatsDatabase2018) o_in.readObject();

@@ -6,5 +6,5 @@ public class DataTable extends JFrame{
 	public DataTable(Competition c) {
 		competition = c;
 	}
-	
+
 }

@@ -16,5 +16,5 @@ public class WriteObject {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex + "Error in writing object.");  
         }
-    }
+    } 
 }
