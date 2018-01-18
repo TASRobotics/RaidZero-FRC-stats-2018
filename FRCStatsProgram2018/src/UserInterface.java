@@ -18,7 +18,7 @@ public class UserInterface extends JFrame implements MouseListener{
     private BufferedImage raidZero;
     private String filepath;
 
-	public UserInterface(Competition comp) {
+	public UserInterface(Competition comp, String s) {
 		super("Raid Zero FRC 2017");
 		
 		filepath = s;
@@ -72,6 +72,8 @@ public class UserInterface extends JFrame implements MouseListener{
         draw(window);
     }
 	public void draw(Graphics window) {
-		
+		if(mouseButton == MouseEvent.BUTTON1) {
+			
+		}
 	}
 }
