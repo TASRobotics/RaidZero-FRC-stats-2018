@@ -46,7 +46,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 		                } catch (Exception e) {
 		                    System.out.println("Error in copying file to storage.");
 		                }
-		                System.out.println(file.delete());                
+		                System.out.println(file.delete());              
     				}
     			}
     		}
@@ -55,7 +55,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable
         }
         
         boolean checkRed = new File(directory_path + "Red.csv").exists(); //Red
-        boolean checkBlue = new File(directory_path + "Blue.csv").exists(); //Blue
+        boolean checkBlue = new File(directory_path + "Blue.csv").exists(); //Blue        
+        
         String csv_filepath = "";
         
         if(!csv_filepath.isEmpty()) {
