@@ -7,7 +7,6 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
-//TODO test
 
 public class ContinueProcessingData extends TimerTask implements Serializable
 {
@@ -53,20 +52,14 @@ public class ContinueProcessingData extends TimerTask implements Serializable
         }catch(Exception e){
         	System.out.println("Error in reading image.");
         }
-        
-        boolean checkRed = new File(directory_path + "Red.csv").exists(); //Red
-        boolean checkBlue = new File(directory_path + "Blue.csv").exists(); //Blue        
+            
+        boolean check = new File(directory_path + "Match.csv").exists();
         
         String csv_filepath = "";
         
         if(!csv_filepath.isEmpty()) {
-        	String blue_red = "";
-	        if(checkRed) { //if red.csv exists
-	            csv_filepath = directory_path + "\\Red.csv"; blue_red = "Red";
-	        }else if(checkBlue) { //if blue.csv exists
-	            csv_filepath = directory_path + "\\Blue.csv"; blue_red = "Blue";
-	        }
-	        
+	        if(check) csv_filepath = directory_path + "\\Match.csv";
+     
 	        try 
 	        {
 	        	File file = new File(csv_filepath);
@@ -82,20 +75,20 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	        	input.close();
 	        	
 	        	//input match data
-	        	for(int i = 2; i < 5; i++) 
+	        	for(int i = 2; i < 4; i++) 
 	        	{
-	        		int[] match_data = new int[7];
-	        		for(int j = 0; j < 7; j++) 
+	        		int[] match_data = new int[10];
+	        		for(int j = 0; j < 10; j++) 
 	        			match_data[j] = Integer.parseInt(data.get(j+2)[i]);   		
 	        		competition.matches.get(Integer.parseInt(data.get(0)[1])).inputData(match_data);	        		
 	        	}
 	        	
 	        	//input robot data
-	        	for(int i = 2; i < 5; i++) 
+	        	for(int i = 2; i < 4; i++) 
 	        	{
-	        		int[] bot_data = new int[7];
+	        		int[] bot_data = new int[10];
 	        		bot_data[0] = Integer.parseInt(data.get(0)[1]);
-	        		for(int j = 1; j < 7; j++)
+	        		for(int j = 1; j < 10; j++)
 	        			bot_data[j] = Integer.parseInt(data.get(j+2)[i]);
 	        		competition.getBot(data.get(2)[i]).inputData(bot_data);
 	        	}
@@ -103,14 +96,14 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	        	//transfer file to another directory for storage
 	        	File csv_file = new File(csv_filepath);
                 File source = csv_file;
-                File dest = new File(directory_path + "\\FRC Match File Storage\\"
-                		+ blue_red + " " + data.get(0)[1] + ".csv");
+                File dest = new File(directory_path + "\\FRC Match File Storage\\" + data.get(0)[1] + ".csv");
                 try {
                     FileUtils.copyFileToDirectory(source, dest);
                 } catch (Exception e) {
                     System.out.println("Error in copying file to storage.");
                 }
-                System.out.println(csv_file.delete());     
+                System.out.println(csv_file.delete());    
+                
 	        }catch(Exception e){
 	        	JOptionPane.showMessageDialog(null, "Error in reading excel file. Please check.");
 	        }
