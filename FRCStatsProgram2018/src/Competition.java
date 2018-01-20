@@ -52,7 +52,7 @@ public class Competition implements Serializable {
 		}
 		catch (Exception Andrew) {
 			System.out.print("Match does not exist." + match_number);
-			return null;
+			return new Match(1, new int[6]);
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class Competition implements Serializable {
 			try {
 				results_page = Jsoup.connect(url + "#results").get();
             	Elements match_bots = results_page.select("td[colspan^=2] > a[href^=/team/]");
-            	System.out.println("match bot size: " + match_bots.size());
+            	System.out.println("match bots size: " + match_bots.size());
             	for(int i = 1; i < qualsSize+1; i++) {
             		int[] bots = new int[6];
             		for(int j = 0; j < 6; j++) bots[j] = Integer.parseInt(match_bots.remove(0).text());            		

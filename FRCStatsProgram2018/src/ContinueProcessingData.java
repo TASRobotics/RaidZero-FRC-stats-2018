@@ -15,7 +15,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable
     
     public ContinueProcessingData(Competition comp){
     	competition = comp;
-        directory_path = comp.inputDir;
+        directory_path = competition.inputDir;
     }
     
     //method to fetch data from local directory, called /5 seconds in runner
@@ -52,14 +52,15 @@ public class ContinueProcessingData extends TimerTask implements Serializable
         }catch(Exception e){
         	System.out.println("Error in reading image.");
         }
-            
-        boolean check = new File(directory_path + "Match.csv").exists();
         
+        System.out.println("dir path: " + directory_path);
+            
+        boolean check = new File(directory_path + "\\Match.csv").exists();
         String csv_filepath = "";
         
-        if(!csv_filepath.isEmpty()) {
-	        if(check) csv_filepath = directory_path + "\\Match.csv";
-     
+        if(check) csv_filepath = directory_path + "\\Match.csv";
+      
+	    if(!csv_filepath.isEmpty()) {
 	        try 
 	        {
 	        	File file = new File(csv_filepath);
@@ -68,28 +69,34 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	        	
 	        	while (input.hasNext()) 
 	        	{
-	        		String row = input.next(); 
+	        		String row = input.next();
 	        		String[] values = row.split(",");
 	        		data.add(values);
 	        	}
 	        	input.close();
 	        	
+	        	System.out.println("data size: " + data.size());
+	        	
 	        	//input match data
 	        	for(int i = 2; i < 4; i++) 
 	        	{
-	        		int[] match_data = new int[10];
+	        		String[] match_data = new String[10];
 	        		for(int j = 0; j < 10; j++) 
-	        			match_data[j] = Integer.parseInt(data.get(j+2)[i]);   		
-	        		competition.matches.get(Integer.parseInt(data.get(0)[1])).inputData(match_data);	        		
+	        			match_data[j] = data.get(j+2)[i]; 
+	        		
+	        		for(String x : match_data) System.out.print(x + " ");
+	        		
+	        		competition.matches.get(Integer.parseInt(data.get(0)[1]
+	        				.substring(0, data.get(0)[1].indexOf("-")))-1).inputData(match_data);	        		
 	        	}
 	        	
 	        	//input robot data
 	        	for(int i = 2; i < 4; i++) 
 	        	{
-	        		int[] bot_data = new int[10];
-	        		bot_data[0] = Integer.parseInt(data.get(0)[1]);
+	        		String[] bot_data = new String[10];
+	        		bot_data[0] = data.get(0)[1];
 	        		for(int j = 1; j < 10; j++)
-	        			bot_data[j] = Integer.parseInt(data.get(j+2)[i]);
+	        			bot_data[j] = data.get(j+2)[i];
 	        		competition.getBot(data.get(2)[i]).inputData(bot_data);
 	        	}
 	        	
