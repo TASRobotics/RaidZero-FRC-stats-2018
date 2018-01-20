@@ -13,25 +13,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Runner {	
+public class Runner {
+	
 	static StatsDatabase2018 database;
 	static String directory_path;
 	
     public static void main(String[]args) throws IOException{
     	//open the database, if does not exist, then create new Database
     	ReadObject obj = new ReadObject();
-    	if(obj.deserializeCompetition("StatsDatabase2018.data") == null) 
+    	if(obj.deserializeCompetition("StatsDatabase2018.data") == null) {
     		database = new StatsDatabase2018();
-    	else 
-    		database = obj.deserializeCompetition("StatsDatabase2018.data");    	
-    	 
+    	}else {
+    		database = obj.deserializeCompetition("StatsDatabase2018.data");
+    	}
+    		 
         String[] buttons = {"New", "Open"};
         int new0_open1 = JOptionPane.showOptionDialog(null, "Create new competition"
         		+ " or open existing competition.", "Select", JOptionPane.INFORMATION_MESSAGE, 
         		0, null, buttons, buttons[1]);
         
-        if (new0_open1 == 0) {
-        	//setups for new competition
+        if (new0_open1 == 0) { //create new competition
         	JFrame setupFrame = new JFrame("Setup for New Competition");
         	setupFrame.setSize(500, 165);
         	setupFrame.setLayout(new BorderLayout());
@@ -77,9 +78,9 @@ public class Runner {
             JButton button_ok = new JButton("OK");
             button_ok.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) { 
-					if(directory.getText().equals(""))
+					if(directory.getText().equals("")) {
 						System.out.print("Choose directory.");
-					else{
+					}else{
 						Competition comp = new Competition(comp_name.getText(), url.getText(), directory.getText());
 						database.addCompetition(comp);
 				        runTheProgram(comp);
@@ -93,9 +94,9 @@ public class Runner {
             setupFrame.setVisible(true);  
             
         }else if (new0_open1 == 1) { //open previously saved competition
-        	if(database.competitions.size() == 0) 
+        	if(database.competitions.size() == 0) {
         		JOptionPane.showMessageDialog(null, "No previous competitions.", "Error", JOptionPane.ERROR_MESSAGE);
-        	else {
+        	}else {
 	        	JFrame chooseCompFrame = new JFrame("Select Competition");
 	        	chooseCompFrame.setSize(500, 150);
 	        	chooseCompFrame.setLayout(new BorderLayout());
@@ -129,13 +130,15 @@ public class Runner {
     }
     
     public static void runTheProgram(Competition competition){
-    	
+    	//open a user interface for that competition
         UserInterface ui = new UserInterface(competition);
         ui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         
+        //add a timer to continuously read in data
         Timer timer = new Timer();     
         timer.schedule(new ContinueProcessingData(competition), 0, 5000); //retrieve files every 5 sec 
         
+        //handle when window is closed
         ui.addWindowListener(new java.awt.event.WindowAdapter() {
         	@Override
         	public void windowClosing(java.awt.event.WindowEvent windowEvent) {

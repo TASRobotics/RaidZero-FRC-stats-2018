@@ -1,17 +1,11 @@
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.Scanner;
-
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Competition implements Serializable {
@@ -22,7 +16,6 @@ public class Competition implements Serializable {
 	ArrayList<Robot> robots;
 	
 	public Competition(String n, String u, String d) {
-		//initiating the variables
 		name = n;
 		url = u;
 		inputDir = d;
@@ -31,38 +24,36 @@ public class Competition implements Serializable {
 		scrape();
 	}
 	
+	//if robot with name exists, return true
 	public boolean botExists(String t) {
 		for (Robot bot: robots) {
 			System.out.println(bot.name.substring(0, bot.name.indexOf(" ")));
-			//if the first word of bot.name is exactly the same as the input bot name, the bot exists 
-			//thus return true
 			if(bot.name.substring(0, bot.name.indexOf(" ")).equals(t)) 
 				return true;
 		}
 		return false;
 	}
 	
+	//if robot with name exists, return the Robot
 	public Robot getBot(String t) {
-		for(Robot bot: robots) {
-			//if the bot exists, outputs the name of the bot
+		for(Robot bot: robots) 
 			if(bot.name.substring(0, bot.name.indexOf(" ")).equals(t)) 
-				return bot;	
-		}	
+				return bot;
 		return null;
 	}
 
+	//if match exists, return the match
 	public Match getMatch(int match_number) {
 		try {
-			//match exists, outputs the name of the match 
 			return matches.get(match_number);
 		}
-		catch (Exception Andrew) {//Andrew is an error
-			//else, outputs a new match
+		catch (Exception Andrew) {
 			System.out.print("Match does not exist." + match_number);
 			return new Match(1, new int[6]);
 		}
 	}
 	
+	//method for scraping from blue alliance
 	public void scrape() {
 		//event page
     	final JDialog waitDialog = new JDialog(new javax.swing.JFrame(), "Loading.");    
@@ -76,8 +67,7 @@ public class Competition implements Serializable {
 			try {
 				teams_page = Jsoup.connect(url + "#teams").get();
             	Elements teams = teams_page.select("div.team-name");            		
-            	for(int i = 0; i < teams.size(); i++) 
-            		robots.add(new Robot(teams.get(i).text()));          		
+            	for(int i = 0; i < teams.size(); i++) robots.add(new Robot(teams.get(i).text()));          		
 			}catch(Exception e) {
 				JOptionPane.showMessageDialog(null, "Error in scraping teams.");
 			}

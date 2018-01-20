@@ -9,6 +9,7 @@ public class StatsDatabase2018 implements Serializable {
 		competitions.add(c);
 	}
     
+	//return the competition with the name
 	public Competition getCompetition(String name) {
 		for (Competition comp: competitions) if (comp.name.equals(name)) return comp;		
 		return null;

@@ -40,7 +40,6 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	    				//move photo to storage and delete file
 	    				File file = new File(fileName), source = file;
 	    				File dest = new File(directory_path + "\\Bot Photo Storage");
-	    				//copies the photo to the directory
 		                try {
 		                    FileUtils.copyFileToDirectory(source, dest);
 		                } catch (Exception e) {
@@ -56,46 +55,36 @@ public class ContinueProcessingData extends TimerTask implements Serializable
         
         System.out.println("dir path: " + directory_path);
             
+        //if the a file called Match.csv exists, set the file path to it
         boolean check = new File(directory_path + "\\Match.csv").exists();
         String csv_filepath = "";
-        //if the match file exists set csv_filepath to the file
-        if(check) 
-        	csv_filepath = directory_path + "\\Match.csv";
-        //if the file contains content reads the file
+        if(check) csv_filepath = directory_path + "\\Match.csv";
+      
+        //if the CSV file path is not empty, read in the file
 	    if(!csv_filepath.isEmpty()) {
-	        try 
-	        {
+	        try {
 	        	File file = new File(csv_filepath);
 	        	Scanner input = new Scanner(file);
 	        	ArrayList<String[]> data = new ArrayList<String[]>();
-	        	//add the inputs to data
-	        	while (input.hasNext()) 
-	        	{
+	        	
+	        	while (input.hasNext()) {
 	        		String row = input.next();
-	        		String[] values = row.split(",");
+	        		String[] values = new String[4];
+	        		for(int i = 0; i < row.split(",").length; i++) values[i] = row.split(",")[i];
 	        		data.add(values);
 	        	}
 	        	input.close();
 	        	
-	        	System.out.println("data size: " + data.size());
-	        	
 	        	//input match data
-	        	for(int i = 2; i < 4; i++) 
-	        	{
+	        	for(int i = 2; i < 4; i++) {
 	        		String[] match_data = new String[10];
-	        		for(int j = 0; j < 10; j++) 
-	        			match_data[j] = data.get(j+2)[i]; 
-	        		
-	        		for(String x : match_data) 
-	        			System.out.print(x + " ");
-	        		
+	        		for(int j = 0; j < 10; j++)	match_data[j] = data.get(j+2)[i];
 	        		competition.matches.get(Integer.parseInt(data.get(0)[1]
-	        				.substring(0, data.get(0)[1].indexOf("-")))-1).inputData(match_data);	        		
+	        				.substring(0, data.get(0)[1].indexOf("-")))-1).inputData(match_data);	 
 	        	}
 	        	
 	        	//input robot data
-	        	for(int i = 2; i < 4; i++) 
-	        	{
+	        	for(int i = 2; i < 4; i++) {
 	        		String[] bot_data = new String[10];
 	        		bot_data[0] = data.get(0)[1];
 	        		for(int j = 1; j < 10; j++)
@@ -115,6 +104,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable
                 System.out.println(csv_file.delete());    
                 
 	        }catch(Exception e){
+	        	System.out.println(e);
 	        	JOptionPane.showMessageDialog(null, "Error in reading excel file. Please check.");
 	        }
         }
