@@ -69,10 +69,10 @@ public class UserInterface extends JFrame implements MouseListener{
         if (mouseButton==MouseEvent.BUTTON1) { //left mouse button pressed
             if (mouseX > 100 && mouseX < 280 && mouseY > 750 && mouseY < 930) {//data table
             	new DataTable(competition);
-            } else if (mouseX > 300 && mouseX < 480 && mouseY > 750 && mouseY < 930) {
+            } else if (mouseX > 300 && mouseX < 480 && mouseY > 750 && mouseY < 930) {//search team #
                 String teamNumber = JOptionPane.showInputDialog("Enter team #: ");
                 if (competition.botExists(teamNumber)) {
-                    try{
+                    try{//return the info
                     	new BotInfo(competition, teamNumber);   
                     } catch (Exception exception) {
                          JOptionPane.showMessageDialog(null, "Error." , "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -80,7 +80,7 @@ public class UserInterface extends JFrame implements MouseListener{
                 } else {
                      JOptionPane.showMessageDialog(null, "Robot does not exist.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
-            } else if (mouseX > 500 && mouseX < 680 && mouseY > 750 && mouseY < 930) {
+            } else if (mouseX > 500 && mouseX < 680 && mouseY > 750 && mouseY < 930) {//search match
                 try{
                 	int matchNumber = Integer.parseInt(JOptionPane.showInputDialog("Enter match #: "));
                     new MatchInfo(competition, matchNumber);
