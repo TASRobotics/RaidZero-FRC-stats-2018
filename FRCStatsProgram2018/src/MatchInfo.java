@@ -10,6 +10,7 @@ public class MatchInfo extends JFrame {
 	int match_number;
 	
 	public MatchInfo(Competition c, int m) {
+		//setups
 		super("Match " + m);
 		competition = c;
 		match_number = m;
@@ -29,6 +30,7 @@ public class MatchInfo extends JFrame {
     }
     
     public void draw() {
+       //layout
        Match match = competition.getMatch(match_number-1);
        String s = match.returnData(); 
        final JTextArea textArea = new JTextArea();

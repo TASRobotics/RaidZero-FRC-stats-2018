@@ -22,14 +22,14 @@ public class Robot implements Serializable {
         portal = floor = false;
         data = new ArrayList<String[]>();
     }
-     
+    //set the avgSCale/avgSwitch/teamScale/teamSwitch/exchangeZone/climbs
     public void inputData(String[] d){
     	//match#, A scale, A switch, T scale, T switch, exchange zone, climb, portal, floor, notes
-    	data.add(d);
-    	
+    	data.add(d);    	
     	//update averages
     	double sum_a_scale = 0, sum_a_switch = 0, sum_t_scale = 0, sum_t_switch = 0,
     			sum_e_z = 0, sum_c = 0;
+    	//sum of avgScale/avgSwitch/teamScale/teamSwitch/exchangeZone/climbs
     	for(String[] i: data) {
     		sum_a_scale += Integer.parseInt(i[1]);
     		sum_a_switch += Integer.parseInt(i[2]);
@@ -47,7 +47,7 @@ public class Robot implements Serializable {
     	avg_e_z = sum_e_z/data.size();
     	avg_c = sum_c/data.size();
     }
-    
+    //return the avgScale/avgSwitch/teamScale/teamSwitch/exchangeZone/climbs
     public String returnAvg() {
     	String s = "Team " + name + "\n";
 		s += "Avg AScale#: " + avg_a_scale + "\n";
@@ -60,7 +60,7 @@ public class Robot implements Serializable {
 		s += "Floor: " + floor + "\n\n";
 		return s;    	
     }
-    
+    //return the data
     public String returnData() {  	
     	String s = "Team#: " + name + "\n\n";
 		for(int i = 0; i < data.size(); i++) {

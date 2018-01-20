@@ -9,15 +9,14 @@ import javax.swing.table.DefaultTableModel;
 public class DataTable extends JFrame {
     Competition competition; 
     private boolean columnHeaderClicked;
-    public DataTable(Competition comp)                       
-    {
+    public DataTable(Competition comp){
         super("Data Table");
         competition = comp;
         setBackground(Color.WHITE);
         setSize(1600,1000);
         setVisible(true);
         columnHeaderClicked = false;
-        
+        //data of the each robots
         String[] columnNames = {"Team", "Avg A Scale", "Avg A Switch", "Avg T Scale", "Avg T Switch", "Avg EZ", "Avg Climb", 
         		"Portal", "Floor"};    
         Object[][] data = new Object[competition.robots.size()][9];
@@ -34,38 +33,35 @@ public class DataTable extends JFrame {
         }    
         
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-
             private static final long serialVersionUID = 1L;
-
-            @Override
+            @Override            
             public Class getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
             }
         };
+        //setups
         JTable table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
 
-    JPanel contentPane = new JPanel();
-    contentPane.setLayout(new BorderLayout());
-    contentPane.add(scrollPane, BorderLayout.CENTER);
-    setContentPane(contentPane);
-    
-    table.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int row = table.rowAtPoint(evt.getPoint());
-            int col = table.columnAtPoint(evt.getPoint());
-            if (row == -1 && col >= 0){
-                columnHeaderClicked = true;
-            }
-            if (row >= 0 && col == 0 && !columnHeaderClicked) {
-                new BotInfo(competition, (String) data[row][0]);
-            }
-        }
-    });
-}
+	    JPanel contentPane = new JPanel();
+	    contentPane.setLayout(new BorderLayout());
+	    contentPane.add(scrollPane, BorderLayout.CENTER);
+	    setContentPane(contentPane);
+	    
+	    table.addMouseListener(new java.awt.event.MouseAdapter() {
+	        @Override
+	        public void mouseClicked(java.awt.event.MouseEvent evt) {
+	            int row = table.rowAtPoint(evt.getPoint());
+	            int col = table.columnAtPoint(evt.getPoint());
+	            if (row == -1 && col >= 0)
+	                columnHeaderClicked = true;           
+	            if (row >= 0 && col == 0 && !columnHeaderClicked) 
+	                new BotInfo(competition, (String) data[row][0]);            
+	        }
+	    });
+    }
 	
 	
 	

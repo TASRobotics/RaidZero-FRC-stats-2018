@@ -40,6 +40,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	    				//move photo to storage and delete file
 	    				File file = new File(fileName), source = file;
 	    				File dest = new File(directory_path + "\\Bot Photo Storage");
+	    				//copies the photo to the directory
 		                try {
 		                    FileUtils.copyFileToDirectory(source, dest);
 		                } catch (Exception e) {
@@ -57,16 +58,17 @@ public class ContinueProcessingData extends TimerTask implements Serializable
             
         boolean check = new File(directory_path + "\\Match.csv").exists();
         String csv_filepath = "";
-        
-        if(check) csv_filepath = directory_path + "\\Match.csv";
-      
+        //if the match file exists set csv_filepath to the file
+        if(check) 
+        	csv_filepath = directory_path + "\\Match.csv";
+        //if the file contains content reads the file
 	    if(!csv_filepath.isEmpty()) {
 	        try 
 	        {
 	        	File file = new File(csv_filepath);
 	        	Scanner input = new Scanner(file);
 	        	ArrayList<String[]> data = new ArrayList<String[]>();
-	        	
+	        	//add the inputs to data
 	        	while (input.hasNext()) 
 	        	{
 	        		String row = input.next();
@@ -84,7 +86,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable
 	        		for(int j = 0; j < 10; j++) 
 	        			match_data[j] = data.get(j+2)[i]; 
 	        		
-	        		for(String x : match_data) System.out.print(x + " ");
+	        		for(String x : match_data) 
+	        			System.out.print(x + " ");
 	        		
 	        		competition.matches.get(Integer.parseInt(data.get(0)[1]
 	        				.substring(0, data.get(0)[1].indexOf("-")))-1).inputData(match_data);	        		
