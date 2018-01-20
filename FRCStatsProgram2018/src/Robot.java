@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Robot implements Serializable {
     String name;
     transient BufferedImage photo;
-    ArrayList<int[]> data;
+    ArrayList<String[]> data;
     double avg_a_scale;
     double avg_a_switch;
     double avg_t_scale;
@@ -20,21 +20,25 @@ public class Robot implements Serializable {
         photo = null;
         avg_a_scale = avg_a_switch = avg_t_scale = avg_t_switch = avg_e_z = avg_c = 0;
         portal = floor = false;
-        data = new ArrayList<int[]>();
+        data = new ArrayList<String[]>();
     }
      
-    public void inputData(int[] d){
+    public void inputData(String[] d){
     	//match#, A scale, A switch, T scale, T switch, exchange zone, climb, portal, floor, notes
     	data.add(d);
     	
     	//update averages
     	double sum_a_scale = 0, sum_a_switch = 0, sum_t_scale = 0, sum_t_switch = 0,
     			sum_e_z = 0, sum_c = 0;
-    	for(int[] i: data) {
-    		sum_a_scale += i[1]; sum_a_switch += i[2]; sum_t_scale += i[3]; 
-    		sum_t_switch += i[4]; sum_e_z += i[5]; sum_c += i[6];
-    		if(i[7] == 1) portal = true;
-    		if(i[8] == 1) floor = true;
+    	for(String[] i: data) {
+    		sum_a_scale += Integer.parseInt(i[1]);
+    		sum_a_switch += Integer.parseInt(i[2]);
+    		sum_t_scale += Integer.parseInt(i[3]); 
+    		sum_t_switch += Integer.parseInt(i[4]);
+    		sum_e_z += Integer.parseInt(i[5]);
+    		sum_c += Integer.parseInt(i[6]);
+    		if(Integer.parseInt(i[7]) == 1) portal = true;
+    		if(Integer.parseInt(i[8]) == 1) floor = true;
     	}
     	avg_a_scale = sum_a_scale/data.size();
     	avg_a_switch = sum_a_switch/data.size();
