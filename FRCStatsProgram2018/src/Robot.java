@@ -45,7 +45,7 @@ public class Robot implements Serializable {
     }
     
     public String returnAvg() {
-    	String s = "Team#: " + name + "\n";
+    	String s = "Team " + name + "\n";
 		s += "Avg AScale#: " + avg_a_scale + "\n";
 		s += "Avg ASwitch#: " + avg_a_switch + "\n";
 		s += "Avg TScale#: " + avg_t_scale + "\n";

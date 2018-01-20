@@ -14,7 +14,6 @@ public class MatchInfo extends JFrame {
 		competition = c;
 		match_number = m;
 		setBackground(Color.WHITE);
-        //set up the Frame
         setSize(800,500);
         setBackground(Color.BLACK);
         setVisible(true);
@@ -24,14 +23,13 @@ public class MatchInfo extends JFrame {
     public void paint(){
         try{
             draw();
-        }catch(Exception exception){
-        	System.out.print(exception);
-            System.out.println("ERROR");
+        }catch(Exception e){
+        	System.out.print(e);
         }
     }
     
     public void draw() {
-       Match match = competition.getMatch(match_number);
+       Match match = competition.getMatch(match_number-1);
        String s = match.returnData(); 
        final JTextArea textArea = new JTextArea();
        textArea.setText(s);
