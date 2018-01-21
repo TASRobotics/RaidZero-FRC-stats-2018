@@ -55,6 +55,7 @@ public class BotInfo extends JFrame {
 		topPanel.setBorder(new LineBorder(Color.ORANGE));
 
 		avgStatsTable = new JTable();
+		avgStatsTable.setEnabled(false);
 
 		avgStatsTable.addComponentListener(new ComponentListener() { // Resizes table to fit
 
@@ -145,6 +146,7 @@ public class BotInfo extends JFrame {
 								.addComponent(matchPanel, GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)));
 
 		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
 
 		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

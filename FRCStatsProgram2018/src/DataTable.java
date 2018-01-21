@@ -45,6 +45,7 @@ public class DataTable extends JFrame {
             }
         };
         JTable table = new JTable(model);
+        table.setEnabled(false);
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
