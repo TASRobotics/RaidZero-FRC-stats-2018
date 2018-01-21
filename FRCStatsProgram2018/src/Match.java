@@ -2,12 +2,10 @@ import java.io.Serializable;
 
 public class Match implements Serializable{
 	int match_number;
-	Robot[] participants;
 	String[][] data;
 	
 	public Match(int n, int[] t) {
 		match_number = n;
-		participants = new Robot[6];
 		data = new String[6][10];
 		
 		//fill in team numbers
