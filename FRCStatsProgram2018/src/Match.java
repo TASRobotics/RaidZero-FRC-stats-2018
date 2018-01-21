@@ -1,31 +1,35 @@
 import java.io.Serializable;
 
-public class Match implements Serializable{
+public class Match implements Serializable {
 	int match_number;
 	String[][] data;
-	
+
 	public Match(int n, int[] t) {
 		match_number = n;
 		data = new String[6][10];
-		
-		//fill in team numbers
-		for(int i = 0; i < 6; i++) data[i][0] = t[i]+"";
+
+		// fill in team numbers
+		for (int i = 0; i < 6; i++)
+			data[i][0] = t[i] + "";
 	}
-	
+
 	public void inputData(String[] d) {
-		//team#, A scale, A switch, T switch, T scale, exchange zone, climb, portal, floor, notes
-		for(int i = 0; i < 6; i++) {
-			if(data[i][0].equals(d[0])) {
+		// team#, A scale, A switch, T switch, T scale, exchange zone, climb, portal,
+		// floor, notes
+		for (int i = 0; i < 6; i++) {
+			if (data[i][0].equals(d[0])) {
 				data[i] = d;
 				break;
-			}	
+			}
 		}
 	}
-	
-	//return the data in a good-looking format
+
+	// return the data in a good-looking format
 	public String returnData() {
 		String s = "Match#: " + match_number + "\n\n";
-		for(int i = 0; i < 6; i++){
+		for (int i = 0; i < 6; i++) {
+
+			s += (i <= 2) ? "RED" + "\n" : "BLUE" + "\n";
 			s += "Team#: " + data[i][0] + "\n";
 			s += "AScale#: " + data[i][1] + "\n";
 			s += "ASwitch#: " + data[i][2] + "\n";

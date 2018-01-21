@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 
 import javax.swing.*;
 
@@ -30,6 +31,11 @@ public class MatchInfo extends JFrame {
     
     //draw the info on the screen
     public void draw() {
+    	
+    	setSize(getWidth(), Toolkit.getDefaultToolkit().getScreenSize().height);
+
+    	setLocationRelativeTo(null);
+    	
        Match match = competition.getMatch(match_number-1);
        String s = match.returnData(); 
        final JTextArea textArea = new JTextArea();
