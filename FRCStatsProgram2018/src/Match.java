@@ -43,4 +43,11 @@ public class Match implements Serializable {
 		}
 		return s;
 	}
+	
+	public boolean botExists(String teamNum) {
+		for(int j = 0; j < data.length; j++) 
+			if(data[j][0].equals(teamNum))
+				return true;		
+		return false;
+	}
 }

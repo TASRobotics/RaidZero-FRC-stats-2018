@@ -84,41 +84,71 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 					data.add(values);
 				}
 				input.close();
-
-				// input match data
-				for (int i = 2; i < 4; i++) {
-					String[] match_data = new String[10];
-					for (int j = 0; j < 10; j++)
-						match_data[j] = data.get(j + 2)[i];
-					competition.matches
-							.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
-							.inputData(match_data);
-				}
-
-				// input robot data
-				for (int i = 2; i < 4; i++) {
-					String[] bot_data = new String[10];
-					bot_data[0] = data.get(0)[1];
-					for (int j = 1; j < 10; j++)
-						bot_data[j] = data.get(j + 2)[i];
-					competition.getBot(data.get(2)[i]).inputData(bot_data);
-				}
-
-				// transfer file to another directory for storage
-				File csv_file = new File(csv_filepath);
-				File source = csv_file;
-				File dest = new File(directory_path + "\\FRC Match File Storage\\" + data.get(0)[1] + ".csv");
-				try {
-					FileUtils.copyFileToDirectory(source, dest);
-				} catch (Exception e) {
-					System.out.println("Error in copying file to storage.");
-				}
-				System.out.println(csv_file.delete());
-
+				
+				String error = "";
+				
+				//check rows and columns
+	        	if(data.size() > 12 || data.get(0).length != 4) 
+	        		error = "Error. Please type in an available cell";
+	        		        	
+	        	//check team numbers
+	        	if(!competition.matches.get(Integer.parseInt(data.get(0)[1]
+	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[2]))
+	        		error = "Error. Invalide Team Number";
+	        	if(!competition.matches.get(Integer.parseInt(data.get(0)[1]
+	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[3])) 
+	        		error = "Error. Invalid Team Number";
+   	
+	        	//check if input is a number
+	        	for(int j = 3; j < 11; j++)
+	        		if(!isNumber(data.get(j)[2]) || !isNumber(data.get(j)[3]))
+	        			error = "Error. Invalid input.";
+	        	
+	        	if(error.isEmpty()) {
+					// input match data
+					for (int i = 2; i < 4; i++) {
+						String[] match_data = new String[10];
+						for (int j = 0; j < 10; j++)
+							match_data[j] = data.get(j + 2)[i];
+						competition.matches
+								.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
+								.inputData(match_data);
+					}
+	
+					// input robot data
+					for (int i = 2; i < 4; i++) {
+						String[] bot_data = new String[10];
+						bot_data[0] = data.get(0)[1];
+						for (int j = 1; j < 10; j++)
+							bot_data[j] = data.get(j + 2)[i];
+						competition.getBot(data.get(2)[i]).inputData(bot_data);
+					}
+	
+					// transfer file to another directory for storage
+					File csv_file = new File(csv_filepath);
+					File source = csv_file;
+					File dest = new File(directory_path + "\\FRC Match File Storage\\" + data.get(0)[1] + ".csv");
+					try {
+						FileUtils.copyFileToDirectory(source, dest);
+					} catch (Exception e) {
+						System.out.println("Error in copying file to storage.");
+					}
+					System.out.println(csv_file.delete());
+	        	}	        
 			} catch (Exception e) {
 				System.out.println(e);
 				JOptionPane.showMessageDialog(null, "Error in reading excel file. Please check.");
 			}
 		}
+	}
+	
+	//method to check if number is numeric
+	public boolean isNumber(String num) {
+		try {
+	   		Integer.parseInt(num);
+	   		return true;
+	   	}catch(Exception e){
+	  		return false;
+	   	}
 	}
 }
