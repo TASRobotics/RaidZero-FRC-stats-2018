@@ -68,6 +68,7 @@ public class UserInterface extends JFrame implements MouseListener {
 			isFirstRun = false;
 		}
 		draw(window);
+		setLocationRelativeTo(null);
 	}
 
 	public void draw(Graphics window) {
@@ -100,6 +101,7 @@ public class UserInterface extends JFrame implements MouseListener {
 				}
 			}
 		}
+		
 	}
 
 	public void mouseEntered(MouseEvent e) {
