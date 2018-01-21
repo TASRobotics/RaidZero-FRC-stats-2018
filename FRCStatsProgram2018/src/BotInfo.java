@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,25 +25,20 @@ public class BotInfo extends JFrame {
 	private Competition competition;
 	private Robot robot;
 	private JPanel contentPane;
-
 	private JTable avgStatsTable;
 	private String teamName;
 
-	public BotInfo(Competition competition, String t) {
-		this.competition = competition;
+	public BotInfo(Competition c, String t) {
+		super(t);
+		competition = c;
 		robot = competition.getBot(t);
-
 		init();
-
-		System.out.println("good");
 		setVisible(true);
 	}
 
 	private void init() {
 
 		setResizable(false);
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1280, 960);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -56,55 +50,44 @@ public class BotInfo extends JFrame {
 
 		avgStatsTable = new JTable();
 		avgStatsTable.setEnabled(false);
-
 		avgStatsTable.addComponentListener(new ComponentListener() { // Resizes table to fit
 
 			@Override
-			public void componentShown(ComponentEvent e) {
-
-			}
-
+			public void componentShown(ComponentEvent e) {}
 			@Override
 			public void componentResized(ComponentEvent e) {
 				avgStatsTable.setRowHeight(avgStatsTable.getHeight() / avgStatsTable.getRowCount());
 			}
-
 			@Override
-			public void componentMoved(ComponentEvent e) {
-
-			}
-
+			public void componentMoved(ComponentEvent e) {}
 			@Override
-			public void componentHidden(ComponentEvent e) {
-
-			}
+			public void componentHidden(ComponentEvent e) {}
 		});
 
 		JLabel robotImage = new JLabel("No Image Available :(");
 		robotImage.setPreferredSize(new Dimension(350, 275));
-
 		robotImage.setHorizontalAlignment(SwingConstants.CENTER);
 
-		avgStatsTable.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		avgStatsTable.setFont(new Font("Arial", Font.PLAIN, 18));
 		avgStatsTable.setEnabled(false);
 		avgStatsTable.setRowSelectionAllowed(false);
-		avgStatsTable.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		avgStatsTable.setBorder(new LineBorder(Color.BLACK, 1, true));
 		avgStatsTable.setForeground(Color.BLACK);
 		avgStatsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		avgStatsTable.setModel(new DefaultTableModel(
-				new Object[][] { { "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
-						{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch },
-						{ "Teleop Scale", robot.avg_t_scale }, { "Teleop Switch", robot.avg_t_switch },
-						{ "Exchange Zone", robot.avg_e_z }, { "Climb", robot.avg_c }, { "Portal", robot.portal },
-						{ "Floor Pickup", robot.floor }, { "Max Teleop Scale", robot.max_t_scale },
-						{ "Max Teleop Switch", robot.max_t_switch }, { "Max Exchange Zone", robot.max_e_z } },
+				new Object[][] { {"<html><b>Average Stats</b></html>", "<html><b>Values</b></html>"},
+						{"Auto Scale", robot.avg_a_scale}, {"Auto Switch", robot.avg_a_switch},
+						{"Teleop Scale", robot.avg_t_scale}, {"Teleop Switch", robot.avg_t_switch},
+						{"Exchange Zone", robot.avg_e_z}, {"Climb", robot.avg_c}, {"Portal", robot.portal},
+						{"Floor Pickup", robot.floor}, {"Max Teleop Scale", robot.max_t_scale},
+						{"Max Teleop Switch", robot.max_t_switch}, {"Max Exchange Zone", robot.max_e_z} },
 				new String[] { "Average ", "Values" }));
 
 		JLabel lblTeamName = new JLabel("<html>Team Name:" + teamName + "</html>");
 
 		lblTeamName.setVerticalAlignment(SwingConstants.TOP);
-		lblTeamName.setFont(new Font("Tahoma", Font.BOLD, 29));
+		lblTeamName.setFont(new Font("Arial", Font.BOLD, 25));
 		lblTeamName.setHorizontalAlignment(SwingConstants.CENTER);
 
 		GroupLayout gl_topPanel = new GroupLayout(topPanel);
@@ -151,7 +134,7 @@ public class BotInfo extends JFrame {
 		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		textArea.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textArea.setFont(new Font("Arial", Font.PLAIN, 20));
 		GroupLayout gl_matchPanel = new GroupLayout(matchPanel);
 		gl_matchPanel.setHorizontalGroup(gl_matchPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_matchPanel.createSequentialGroup().addContainerGap()
@@ -160,49 +143,9 @@ public class BotInfo extends JFrame {
 				GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE));
 
 		matchPanel.setLayout(gl_matchPanel);
-
-		System.out.println("robot data size" + robot.data.size());
-
 		teamName = robot.name;
-
 		lblTeamName.setText("<html>" + teamName + "</html>");
 		textArea.append(robot.returnData());
-
-		/**
-		 * for (int x = 0; x < robot.data.size(); x++) {
-		 * 
-		 * for (int y = 0; x < robot.data.get(x).length; y++) {
-		 * 
-		 * textArea.append("\n");
-		 * 
-		 * switch (y) { case 0: textArea.append("Match:" + x + 1); break;
-		 * 
-		 * case 1: textArea.append("Auto Scale: " + robot.data.get(x)[y]); break; case
-		 * 2: textArea.append("Auto Switch: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 3: textArea.append("Teleop Scale: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 4: textArea.append("Teleop Switch: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 5: textArea.append("Exchange Zone: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 6: textArea.append("Climb: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 7: textArea.append("Portal: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 8: textArea.append("Floor: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 9: textArea.append("Notes: " + robot.data.get(x)[y]);
-		 * 
-		 * break;
-		 * 
-		 * }
-		 * 
-		 * } }
-		 **/
-
 		contentPane.setLayout(gl_contentPane);
-
 	}
-
 }

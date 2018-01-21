@@ -19,10 +19,8 @@ public class UserInterface extends JFrame implements MouseListener {
 	public UserInterface(Competition comp) {
 		super("Raid Zero FRC 2018");
 		try {
-			// raidZero = ImageIO.read(new File("2017_Australia.jpg"));
-		} catch (Exception e) {
-
-		}
+			raidZero = ImageIO.read(new File("garigari.jpg"));
+		} catch (Exception e) {}
 
 		setBackground(Color.WHITE);
 		competition = comp;
@@ -33,7 +31,6 @@ public class UserInterface extends JFrame implements MouseListener {
 		setBackground(Color.BLACK);
 		setVisible(true);
 		addMouseListener(this);
-
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -50,9 +47,7 @@ public class UserInterface extends JFrame implements MouseListener {
 			window.fillRect(0, 0, 2000, 1200);
 			window.drawImage(raidZero, 0, 0, 1600, 1000, this);
 			window.setColor(new Color(50, 50, 50));
-			for (int i = 100; i < 600; i += 200) {
-				window.fillRect(i, 750, 180, 180);
-			}
+			for (int i = 100; i < 600; i += 200) window.fillRect(i, 750, 180, 180);
 			window.setColor(new Color(230, 230, 230));
 			window.setFont(new Font("Arial", Font.BOLD, 30));
 			window.drawString("Data", 110, 800);
@@ -78,14 +73,13 @@ public class UserInterface extends JFrame implements MouseListener {
 			} else if (mouseX > 300 && mouseX < 480 && mouseY > 750 && mouseY < 930) {// search team #
 				String teamNumber = JOptionPane.showInputDialog("Enter team #: ");
 				if (competition.botExists(teamNumber)) {
-					try {// return the info
+					try {
 						new BotInfo(competition, teamNumber);
 					} catch (Exception exception) {
 						JOptionPane.showMessageDialog(null, "Error.", "Error", JOptionPane.INFORMATION_MESSAGE);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Robot does not exist.", "Error",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Robot does not exist.", "Error",JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else if (mouseX > 500 && mouseX < 680 && mouseY > 750 && mouseY < 930) {// search match
 				try {
@@ -93,26 +87,16 @@ public class UserInterface extends JFrame implements MouseListener {
 					if (matchNumber <= competition.matches.size())
 						new MatchInfo(competition, matchNumber);
 					else
-						JOptionPane.showMessageDialog(null, "Input number too big.", "Error",
-								JOptionPane.INFORMATION_MESSAGE);
-
+						JOptionPane.showMessageDialog(null, "Match does not exist.", "Error", JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error.", "Error", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Match does not exist.", "Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		}
-		
 	}
 
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	public void mouseExited(MouseEvent e) {
-	}
-
-	public void mousePressed(MouseEvent e) {
-	}
-
-	public void mouseReleased(MouseEvent e) {
-	}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
 }
