@@ -91,14 +91,14 @@ public class BotInfo extends JFrame {
 		avgStatsTable.setForeground(Color.BLACK);
 		avgStatsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-		avgStatsTable
-				.setModel(new DefaultTableModel(
-						new Object[][] { { "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
-								{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch },
-								{ "Teleop Scale", robot.avg_t_scale }, { "Teleop Switch", robot.avg_t_switch },
-								{ "Exchange Zone", robot.avg_e_z }, { "Climb", robot.avg_c },
-								{ "Portal", robot.portal }, { "Floor Pickup", robot.floor } },
-						new String[] { "Average ", "Values" }));
+		avgStatsTable.setModel(new DefaultTableModel(
+				new Object[][] { { "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
+						{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch },
+						{ "Teleop Scale", robot.avg_t_scale }, { "Teleop Switch", robot.avg_t_switch },
+						{ "Exchange Zone", robot.avg_e_z }, { "Climb", robot.avg_c }, { "Portal", robot.portal },
+						{ "Floor Pickup", robot.floor }, { "Max Teleop Scale", robot.max_t_scale },
+						{ "Max Teleop Switch", robot.max_t_switch }, { "Max Exchange Zone", robot.max_e_z } },
+				new String[] { "Average ", "Values" }));
 
 		JLabel lblTeamName = new JLabel("<html>Team Name:" + teamName + "</html>");
 
@@ -144,14 +144,11 @@ public class BotInfo extends JFrame {
 								.addPreferredGap(ComponentPlacement.UNRELATED)
 								.addComponent(matchPanel, GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)));
 
-			
 		JTextArea textArea = new JTextArea();
-		
-		
+
 		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
-		
+
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GroupLayout gl_matchPanel = new GroupLayout(matchPanel);
 		gl_matchPanel.setHorizontalGroup(gl_matchPanel.createParallelGroup(Alignment.LEADING)
@@ -161,8 +158,6 @@ public class BotInfo extends JFrame {
 				GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE));
 
 		matchPanel.setLayout(gl_matchPanel);
-
-		
 
 		System.out.println("robot data size" + robot.data.size());
 
