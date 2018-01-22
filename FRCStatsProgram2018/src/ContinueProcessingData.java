@@ -34,8 +34,6 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 					if (img == null)
 						continue;
 
-					System.out.println("hey");
-
 					String team = fileName.substring(0, fileName.indexOf("."));
 					if (competition.botExists(team)) {
 						// set photo
@@ -51,14 +49,14 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 						try {
 							FileUtils.copyFileToDirectory(source, dest);
 						} catch (Exception e) {
-							System.out.println("Error in copying file to storage.");
+							JOptionPane.showMessageDialog(null, "Error in copying file to storage.");
 						}
 						System.out.println(file.delete());
 					}
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Error in reading image.");
+			JOptionPane.showMessageDialog(null, "Error in reading image.");
 		}
 
 		System.out.println("dir path: " + directory_path);
@@ -144,12 +142,13 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 					try {
 						FileUtils.copyFileToDirectory(source, dest);
 					} catch (Exception e) {
-						System.out.println("Error in copying file to storage.");
+						JOptionPane.showMessageDialog(null, "Error in copying file to storage.");
 					}
 					System.out.println(csv_file.delete());
-	        	}	        
+	        	}else {
+	        		JOptionPane.showMessageDialog(null, error);
+	        	}        
 			} catch (Exception e) {
-				System.out.println(e);
 				JOptionPane.showMessageDialog(null, "Error in reading excel file. Please check.");
 			}
 		}
