@@ -76,8 +76,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				Scanner input = new Scanner(file);
 				ArrayList<String[]> data = new ArrayList<String[]>();
 
-				while (input.hasNext()) {
-					String row = input.next();
+				while (input.hasNextLine()) {
+					String row = input.nextLine();
 					String[] values = new String[4];
 					for (int i = 0; i < row.split(",").length; i++)
 						values[i] = row.split(",")[i];
@@ -103,6 +103,19 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 	        	for(int j = 3; j < 11; j++)
 	        		if(!isNumber(data.get(j)[2]) || !isNumber(data.get(j)[3]))
 	        			error = "Error. Invalid input.";
+	        	
+	        	//check if match no is valid
+	        	for(int i = 0; i < data.get(0)[1].length(); i++) {
+	        		if(isNumber(data.get(0)[1].charAt(i)+"")){
+	        			continue;
+	        		}else {
+	        			if(data.get(0)[1].charAt(i) != '-') {
+	        				error = "Error. Invalid Match number.";
+	        				break;
+	        			}
+	        		}
+	        	}
+	        	
 	        	
 	        	if(error.isEmpty()) {
 					// input match data
