@@ -50,27 +50,21 @@ public class DataTable extends JFrame {
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
 
-    JPanel contentPane = new JPanel();
-    contentPane.setLayout(new BorderLayout());
-    contentPane.add(scrollPane, BorderLayout.CENTER);
-    setContentPane(contentPane);
-    
-    table.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int row = table.rowAtPoint(evt.getPoint());
-            int col = table.columnAtPoint(evt.getPoint());
-            if (row == -1 && col >= 0){
-                columnHeaderClicked = true;
-            }
-            if (row >= 0 && col == 0 && !columnHeaderClicked) {
-                new BotInfo(competition, (String) data[row][0]);
-            }
-        }
-    });
-}
-	
-	
-	
-
+	    JPanel contentPane = new JPanel();
+	    contentPane.setLayout(new BorderLayout());
+	    contentPane.add(scrollPane, BorderLayout.CENTER);
+	    setContentPane(contentPane);
+	    
+	    table.addMouseListener(new java.awt.event.MouseAdapter() {
+	        @Override
+	        public void mouseClicked(java.awt.event.MouseEvent evt) {
+	            int row = table.rowAtPoint(evt.getPoint());
+	            int col = table.columnAtPoint(evt.getPoint());
+	            if (row == -1 && col >= 0)
+	                columnHeaderClicked = true;
+	            if (row >= 0 && col == 0 && !columnHeaderClicked)
+	                new BotInfo(competition, (String) data[row][0]);      
+	        }
+	    });
+	}
 }
