@@ -75,13 +75,18 @@ public class BotInfo extends JFrame {
 		avgStatsTable.setForeground(Color.BLACK);
 		avgStatsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
+		String portal = "no", floor = "no";
+		if(robot.portal) portal = "yes";
+		if(robot.floor) floor = "yes";
+		
 		avgStatsTable.setModel(new DefaultTableModel(
 				new Object[][] { {"<html><b>Average Stats</b></html>", "<html><b>Values</b></html>"},
 						{"Auto Scale", robot.avg_a_scale}, {"Auto Switch", robot.avg_a_switch},
-						{"Teleop Scale", robot.avg_t_scale}, {"Teleop Switch", robot.avg_t_switch},
-						{"Exchange Zone", robot.avg_e_z}, {"Climb", robot.avg_c}, {"Portal", robot.portal},
-						{"Floor Pickup", robot.floor}, {"Max Teleop Scale", robot.max_t_scale},
-						{"Max Teleop Switch", robot.max_t_switch}, {"Max Exchange Zone", robot.max_e_z} },
+						{"Teleop Scale", robot.avg_t_scale}, {"Max Teleop Scale", robot.max_t_scale}, 
+						{"Teleop Switch", robot.avg_t_switch}, {"Max Teleop Switch", robot.max_t_switch},
+						{"Exchange Zone", robot.avg_e_z}, {"Max Exchange Zone", robot.max_e_z}, 
+						{"Climb", robot.avg_c}, {"Portal", portal}, {"Floor Pickup", floor}, 
+				},
 				new String[] { "Average ", "Values" }));
 
 		JLabel lblTeamName = new JLabel("<html>Team Name:" + teamName + "</html>");

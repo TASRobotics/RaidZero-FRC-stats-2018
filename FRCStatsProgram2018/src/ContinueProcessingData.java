@@ -56,7 +56,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				}
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error in reading image.");
+			System.out.println("Error in reading image.");
 		}
 
 		System.out.println("dir path: " + directory_path);
@@ -92,7 +92,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 	        	//check team numbers
 	        	if(!competition.matches.get(Integer.parseInt(data.get(0)[1]
 	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[2]))
-	        		error = "Error. Invalide Team Number";
+	        		error = "Error. Invalid Team Number";
 	        	if(!competition.matches.get(Integer.parseInt(data.get(0)[1]
 	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[3])) 
 	        		error = "Error. Invalid Team Number";
@@ -105,12 +105,12 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 	        	//check if match no is valid
 	        	for(int i = 0; i < data.get(0)[1].length(); i++) {
 	        		if(isNumber(data.get(0)[1].charAt(i)+"")){
-	        			continue;
 	        		}else {
 	        			if(data.get(0)[1].charAt(i) != '-') {
-	        				error = "Error. Invalid Match number.";
+	        				error = "Error. Invalid Match number. " + data.get(0)[1].charAt(i);
 	        				break;
 	        			}
+	        			break;
 	        		}
 	        	}
 	        	

@@ -83,6 +83,7 @@ public class Runner {
 					}else{
 						Competition comp = new Competition(comp_name.getText(), url.getText(), directory.getText());
 						database.addCompetition(comp);
+				        setupFrame.dispose();
 				        runTheProgram(comp);
 					}
 				}
@@ -117,6 +118,7 @@ public class Runner {
 	        	button_ok.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						chooseCompFrame.dispose();
 						runTheProgram(database.getCompetition((String)menu.getSelectedItem()));					
 					}
 	        	});
