@@ -14,15 +14,11 @@ public class Robot implements Serializable {
     double avg_c;
     boolean portal;
     boolean floor;
-    int max_t_scale;
-    int max_t_switch;
-    int max_e_z;
     
     public Robot(String t){
         name = t;
         photo = null;
         avg_a_scale = avg_a_switch = avg_t_scale = avg_t_switch = avg_e_z = avg_c = 0;
-        max_t_scale = max_t_switch = max_e_z = 0;
         portal = floor = false;
         data = new ArrayList<String[]>();
     }
@@ -31,11 +27,6 @@ public class Robot implements Serializable {
     public void inputData(String[] d){
     	//match#, A scale, A switch, T scale, T switch, exchange zone, climb, portal, floor, notes
     	data.add(d);
-    	
-    	//update max
-    	if(Integer.parseInt(d[3]) > max_t_scale) max_t_scale = Integer.parseInt(d[3]);
-    	if(Integer.parseInt(d[4]) > max_t_switch) max_t_switch = Integer.parseInt(d[4]);
-    	if(Integer.parseInt(d[5]) > max_e_z) max_e_z = Integer.parseInt(d[5]);
     	
     	//update averages
     	double sum_a_scale = 0, sum_a_switch = 0, sum_t_scale = 0, sum_t_switch = 0,
@@ -90,3 +81,4 @@ public class Robot implements Serializable {
 		return s;
     }
 }
+
