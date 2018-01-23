@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
+//TODO test
 
 public class ContinueProcessingData extends TimerTask implements Serializable
 {
@@ -15,7 +16,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable
     
     public ContinueProcessingData(Competition comp){
     	competition = comp;
-        directory_path = competition.inputDir;
+        directory_path = comp.inputDir;
     }
     
     //method to fetch data from local directory, called /5 seconds in runner
@@ -53,58 +54,64 @@ public class ContinueProcessingData extends TimerTask implements Serializable
         	System.out.println("Error in reading image.");
         }
         
-        System.out.println("dir path: " + directory_path);
-            
-        //if the a file called Match.csv exists, set the file path to it
-        boolean check = new File(directory_path + "\\Match.csv").exists();
+        boolean checkRed = new File(directory_path + "Red.csv").exists(); //Red
+        boolean checkBlue = new File(directory_path + "Blue.csv").exists(); //Blue        
+        
         String csv_filepath = "";
-        if(check) csv_filepath = directory_path + "\\Match.csv";
-      
-        //if the CSV file path is not empty, read in the file
-	    if(!csv_filepath.isEmpty()) {
-	        try {
+        
+        if(!csv_filepath.isEmpty()) {
+        	String blue_red = "";
+	        if(checkRed) { //if red.csv exists
+	            csv_filepath = directory_path + "\\Red.csv"; blue_red = "Red";
+	        }else if(checkBlue) { //if blue.csv exists
+	            csv_filepath = directory_path + "\\Blue.csv"; blue_red = "Blue";
+	        }
+	        
+	        try 
+	        {
 	        	File file = new File(csv_filepath);
 	        	Scanner input = new Scanner(file);
 	        	ArrayList<String[]> data = new ArrayList<String[]>();
 	        	
-	        	while (input.hasNext()) {
-	        		String row = input.next();
-	        		String[] values = new String[4];
-	        		for(int i = 0; i < row.split(",").length; i++) values[i] = row.split(",")[i];
+	        	while (input.hasNext()) 
+	        	{
+	        		String row = input.next(); 
+	        		String[] values = row.split(",");
 	        		data.add(values);
 	        	}
 	        	input.close();
 	        	
 	        	//input match data
-	        	for(int i = 2; i < 4; i++) {
-	        		String[] match_data = new String[10];
-	        		for(int j = 0; j < 10; j++)	match_data[j] = data.get(j+2)[i];
-	        		competition.matches.get(Integer.parseInt(data.get(0)[1]
-	        				.substring(0, data.get(0)[1].indexOf("-")))-1).inputData(match_data);	 
+	        	for(int i = 2; i < 5; i++) 
+	        	{
+	        		int[] match_data = new int[7];
+	        		for(int j = 0; j < 7; j++) 
+	        			match_data[j] = Integer.parseInt(data.get(j+2)[i]);   		
+	        		competition.matches.get(Integer.parseInt(data.get(0)[1])).inputData(match_data);	        		
 	        	}
 	        	
 	        	//input robot data
-	        	for(int i = 2; i < 4; i++) {
-	        		String[] bot_data = new String[10];
-	        		bot_data[0] = data.get(0)[1];
-	        		for(int j = 1; j < 10; j++)
-	        			bot_data[j] = data.get(j+2)[i];
+	        	for(int i = 2; i < 5; i++) 
+	        	{
+	        		int[] bot_data = new int[7];
+	        		bot_data[0] = Integer.parseInt(data.get(0)[1]);
+	        		for(int j = 1; j < 7; j++)
+	        			bot_data[j] = Integer.parseInt(data.get(j+2)[i]);
 	        		competition.getBot(data.get(2)[i]).inputData(bot_data);
 	        	}
 	        	
 	        	//transfer file to another directory for storage
 	        	File csv_file = new File(csv_filepath);
                 File source = csv_file;
-                File dest = new File(directory_path + "\\FRC Match File Storage\\" + data.get(0)[1] + ".csv");
+                File dest = new File(directory_path + "\\FRC Match File Storage\\"
+                		+ blue_red + " " + data.get(0)[1] + ".csv");
                 try {
                     FileUtils.copyFileToDirectory(source, dest);
                 } catch (Exception e) {
                     System.out.println("Error in copying file to storage.");
                 }
-                System.out.println(csv_file.delete());    
-                
+                System.out.println(csv_file.delete());     
 	        }catch(Exception e){
-	        	System.out.println(e);
 	        	JOptionPane.showMessageDialog(null, "Error in reading excel file. Please check.");
 	        }
         }
