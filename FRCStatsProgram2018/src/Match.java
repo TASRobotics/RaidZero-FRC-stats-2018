@@ -7,15 +7,12 @@ public class Match implements Serializable {
 	public Match(int n, int[] t) {
 		match_number = n;
 		data = new String[6][10];
-
 		// fill in team numbers
-		for (int i = 0; i < 6; i++)
-			data[i][0] = t[i] + "";
+		for (int i = 0; i < 6; i++) data[i][0] = t[i] + "";
 	}
 
 	public void inputData(String[] d) {
-		// team#, A scale, A switch, T switch, T scale, exchange zone, climb, portal,
-		// floor, notes
+		// team#, A scale, A switch, T switch, T scale, exchange zone, climb, portal, floor, notes
 		for (int i = 0; i < 6; i++) {
 			if (data[i][0].equals(d[0])) {
 				data[i] = d;

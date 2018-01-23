@@ -22,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class BotInfo extends JFrame {
 
-	private Competition competition;
 	private Robot robot;
 	private JPanel contentPane;
 
@@ -30,20 +29,14 @@ public class BotInfo extends JFrame {
 	private String teamName;
 
 	public BotInfo(Competition competition, String t) {
-		this.competition = competition;
 		robot = competition.getBot(t);
-
 		init();
-
-		System.out.println("good");
 		setVisible(true);
 	}
 
 	private void init() {
 
 		setResizable(false);
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1280, 960);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -96,10 +89,11 @@ public class BotInfo extends JFrame {
 		avgStatsTable.setModel(new DefaultTableModel(
 				new Object[][] { { "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
 						{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch },
-						{ "Teleop Scale", robot.avg_t_scale }, { "Teleop Switch", robot.avg_t_switch },
-						{ "Exchange Zone", robot.avg_e_z }, { "Climb", robot.avg_c }, { "Portal", robot.portal },
-						{ "Floor Pickup", robot.floor }, { "Max Teleop Scale", robot.max_t_scale },
-						{ "Max Teleop Switch", robot.max_t_switch }, { "Max Exchange Zone", robot.max_e_z } },
+						{ "Teleop Scale", robot.avg_t_scale }, { "Max Teleop Scale", robot.max_t_scale },
+						{ "Teleop Switch", robot.avg_t_switch },{ "Max Teleop Switch", robot.max_t_switch },						
+						{ "Exchange Zone", robot.avg_e_z }, { "Max Exchange Zone", robot.max_e_z }, 
+						{ "Climb", robot.avg_c }, { "Portal", robot.portal },
+						{ "Floor Pickup", robot.floor }},
 				new String[] { "Average ", "Values" }));
 
 		JLabel lblTeamName = new JLabel("<html>Team Name:" + teamName + "</html>");
@@ -168,39 +162,6 @@ public class BotInfo extends JFrame {
 
 		lblTeamName.setText("<html>" + teamName + "</html>");
 		textArea.append(robot.returnData());
-
-		/**
-		 * for (int x = 0; x < robot.data.size(); x++) {
-		 * 
-		 * for (int y = 0; x < robot.data.get(x).length; y++) {
-		 * 
-		 * textArea.append("\n");
-		 * 
-		 * switch (y) { case 0: textArea.append("Match:" + x + 1); break;
-		 * 
-		 * case 1: textArea.append("Auto Scale: " + robot.data.get(x)[y]); break; case
-		 * 2: textArea.append("Auto Switch: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 3: textArea.append("Teleop Scale: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 4: textArea.append("Teleop Switch: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 5: textArea.append("Exchange Zone: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 6: textArea.append("Climb: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 7: textArea.append("Portal: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 8: textArea.append("Floor: " + robot.data.get(x)[y]);
-		 * 
-		 * break; case 9: textArea.append("Notes: " + robot.data.get(x)[y]);
-		 * 
-		 * break;
-		 * 
-		 * }
-		 * 
-		 * } }
-		 **/
 
 		contentPane.setLayout(gl_contentPane);
 
