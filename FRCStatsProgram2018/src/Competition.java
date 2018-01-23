@@ -105,4 +105,3 @@ public class Competition implements Serializable {
     	JOptionPane.showMessageDialog(null, "Synced."); 	
 	}
 }
-

@@ -149,6 +149,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 	        		JOptionPane.showMessageDialog(null, error);
 	        	}        
 			} catch (Exception e) {
+				System.out.println("Error " + e);
 				JOptionPane.showMessageDialog(null, "Error in reading excel file. Please check.");
 			}
 		}

@@ -39,6 +39,7 @@ public class UserInterface extends JFrame implements MouseListener {
 		mouseButton = e.getButton();
 		repaint();
 	}
+	
 
 	public void paint(Graphics window) {
 		if (isFirstRun) {
