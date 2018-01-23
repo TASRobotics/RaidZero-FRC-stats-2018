@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 
 import javax.swing.*;
 
@@ -15,6 +14,7 @@ public class MatchInfo extends JFrame {
 		competition = c;
 		match_number = m;
 		setBackground(Color.WHITE);
+        //set up the Frame
         setSize(800,500);
         setBackground(Color.BLACK);
         setVisible(true);
@@ -24,19 +24,14 @@ public class MatchInfo extends JFrame {
     public void paint(){
         try{
             draw();
-        }catch(Exception e){
-        	System.out.print(e);
+        }catch(Exception exception){
+        	System.out.print(exception);
+            System.out.println("ERROR");
         }
     }
     
-    //draw the info on the screen
     public void draw() {
-    	
-    	setSize(getWidth(), Toolkit.getDefaultToolkit().getScreenSize().height);
-
-    	setLocationRelativeTo(null);
-    	
-       Match match = competition.getMatch(match_number-1);
+       Match match = competition.getMatch(match_number);
        String s = match.returnData(); 
        final JTextArea textArea = new JTextArea();
        textArea.setText(s);

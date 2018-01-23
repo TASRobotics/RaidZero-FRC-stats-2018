@@ -4,6 +4,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="D:/Student_Data/FRC/commons-io-2.6/commons-io-2.6.jar"/>
 	<classpathentry kind="lib" path="D:/Student_Data/FRC/commons-io-2.6/commons-io-2.6-javadoc.jar"/>
-	<classpathentry kind="lib" path="D:/Student_Data/FRC/jsoup-1.11.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
