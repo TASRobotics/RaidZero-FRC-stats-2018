@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.io.IOException;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;

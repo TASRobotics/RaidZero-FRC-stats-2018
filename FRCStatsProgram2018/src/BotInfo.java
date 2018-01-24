@@ -3,7 +3,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.image.BufferedImage;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,20 +21,23 @@ import javax.swing.table.DefaultTableModel;
 
 public class BotInfo extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private Robot robot;
 	private JPanel contentPane;
-
 	private JTable avgStatsTable;
 	private String teamName;
 
+	// constructor parameters: Competition competition, String team number
 	public BotInfo(Competition competition, String t) {
 		robot = competition.getBot(t);
 		init();
 		setVisible(true);
 	}
-
+	
+	// initialize the frame
 	private void init() {
 
+		//setup
 		setResizable(false);
 		setBounds(0, 0, 1280, 960);
 		setLocationRelativeTo(null);
@@ -43,49 +45,39 @@ public class BotInfo extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
+		// initialize top panel
 		JPanel topPanel = new JPanel();
 		topPanel.setBorder(new LineBorder(Color.ORANGE));
 
+		// table to display average statistics
 		avgStatsTable = new JTable();
 		avgStatsTable.setEnabled(false);
-
 		avgStatsTable.addComponentListener(new ComponentListener() { // Resizes table to fit
-
 			@Override
-			public void componentShown(ComponentEvent e) {
-
-			}
-
+			public void componentShown(ComponentEvent e) {}
 			@Override
 			public void componentResized(ComponentEvent e) {
 				avgStatsTable.setRowHeight(avgStatsTable.getHeight() / avgStatsTable.getRowCount());
 			}
-
 			@Override
-			public void componentMoved(ComponentEvent e) {
-
-			}
-
+			public void componentMoved(ComponentEvent e) {}
 			@Override
-			public void componentHidden(ComponentEvent e) {
-
-			}
+			public void componentHidden(ComponentEvent e) {}
 		});
 
-		JLabel robotImage = new JLabel("No Image Available :(");
+		// spot for photo
+		JLabel robotImage = new JLabel("No Image Available :("); // default
 		robotImage.setPreferredSize(new Dimension(350, 275));
-
 		robotImage.setHorizontalAlignment(SwingConstants.CENTER);
 
+		// fill in table for averages
 		avgStatsTable.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		avgStatsTable.setEnabled(false);
 		avgStatsTable.setRowSelectionAllowed(false);
 		avgStatsTable.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		avgStatsTable.setForeground(Color.BLACK);
 		avgStatsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
 		avgStatsTable.setFont(new Font("Tahoma", Font.BOLD, 18));
-
 		avgStatsTable.setModel(new DefaultTableModel(
 				new Object[][] { { "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
 						{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch },
@@ -96,12 +88,13 @@ public class BotInfo extends JFrame {
 						{ "Floor Pickup", robot.floor }},
 				new String[] { "Average ", "Values" }));
 
+		//team name
 		JLabel lblTeamName = new JLabel("<html>Team Name:" + teamName + "</html>");
-
 		lblTeamName.setVerticalAlignment(SwingConstants.TOP);
 		lblTeamName.setFont(new Font("Tahoma", Font.BOLD, 26));
 		lblTeamName.setHorizontalAlignment(SwingConstants.CENTER);
 
+		// group layout for averages table
 		GroupLayout gl_topPanel = new GroupLayout(topPanel);
 		gl_topPanel.setHorizontalGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_topPanel.createSequentialGroup().addContainerGap().addComponent(avgStatsTable,
@@ -112,12 +105,14 @@ public class BotInfo extends JFrame {
 						.addContainerGap(25, Short.MAX_VALUE)));
 		topPanel.setLayout(gl_topPanel);
 
-		if (robot.photo != null)
-			robotImage.setIcon(new ImageIcon(robot.photo));
+		// fill in photo if exists
+		if (robot.photo != null) robotImage.setIcon(new ImageIcon(robot.photo));
 
+		// bottom panel
 		JPanel matchPanel = new JPanel();
-
 		matchPanel.setBorder(new LineBorder(Color.ORANGE, 1, true));
+		
+		// group layout image and team name
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
 				.createSequentialGroup()
@@ -140,13 +135,14 @@ public class BotInfo extends JFrame {
 								GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)))
 				.addGap(12).addComponent(matchPanel, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)));
 
+		// add text area and scroll pane
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
-
 		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		
+		// group layout for match panel
 		GroupLayout gl_matchPanel = new GroupLayout(matchPanel);
 		gl_matchPanel.setHorizontalGroup(gl_matchPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_matchPanel.createSequentialGroup().addContainerGap()
@@ -156,15 +152,10 @@ public class BotInfo extends JFrame {
 						.addComponent(scroll, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE).addContainerGap()));
 		matchPanel.setLayout(gl_matchPanel);
 
-		System.out.println("robot data size" + robot.data.size());
-
+		// set team name
 		teamName = robot.name;
-
 		lblTeamName.setText("<html>" + teamName + "</html>");
 		textArea.append(robot.returnData());
-
 		contentPane.setLayout(gl_contentPane);
-
 	}
-
 }

@@ -9,9 +9,12 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 
 public class ContinueProcessingData extends TimerTask implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	Competition competition;
 	String directory_path;
 
+	// constructor parameter: Competition competition
 	public ContinueProcessingData(Competition comp) {
 		competition = comp;
 		directory_path = competition.inputDir;
@@ -20,23 +23,21 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 	// method to fetch data from local directory, called /5 seconds in runner
 	public void run() {
 
-		// photos
+		// read photos
 		File directory = new File(directory_path);
 		BufferedImage img = null;
 		try {
 			if (directory.list().length > 0) {
-				for (String fileName : directory.list()) {
-
+				for (String fileName: directory.list()) {
 					System.out.println(directory_path + "\\" + fileName);
-
 					img = ImageIO.read(new File(directory_path + "\\" + fileName));
+					if (img == null) continue;
 
-					if (img == null)
-						continue;
-
+					//get team number, check if robot exists
 					String team = fileName.substring(0, fileName.indexOf("."));
 					if (competition.botExists(team)) {
-						// set photo
+						
+						// try setting photo
 						try {
 							competition.getBot(team).photo = img;
 						} catch (Exception e) {
@@ -59,13 +60,10 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 			System.out.println("Error in reading image.");
 		}
 
-		System.out.println("dir path: " + directory_path);
-
 		// if the a file called Match.csv exists, set the file path to it
 		boolean check = new File(directory_path + "\\Match.csv").exists();
 		String csv_filepath = "";
-		if (check)
-			csv_filepath = directory_path + "\\Match.csv";
+		if (check) csv_filepath = directory_path + "\\Match.csv";
 
 		// if the CSV file path is not empty, read in the file
 		if (!csv_filepath.isEmpty()) {
@@ -74,6 +72,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				Scanner input = new Scanner(file);
 				ArrayList<String[]> data = new ArrayList<String[]>();
 
+				// transfer CSV cells to a matrix
 				while (input.hasNextLine()) {
 					String row = input.nextLine();
 					String[] values = new String[4];
@@ -83,13 +82,14 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				}
 				input.close();
 				
+				// check for errors
 				String error = "";
 				
-				//check rows and columns
+				// check rows and columns
 	        	if(data.size() > 12 || data.get(0).length != 4) 
 	        		error = "Error. Please type in an available cell";
 	        		        	
-	        	//check team numbers
+	        	// check team numbers
 	        	if(!competition.matches.get(Integer.parseInt(data.get(0)[1]
 	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[2]))
 	        		error = "Error. Invalid Team Number";
@@ -97,12 +97,12 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[3])) 
 	        		error = "Error. Invalid Team Number";
    	
-	        	//check if input is a number
+	        	// check if input is a number
 	        	for(int j = 3; j < 11; j++)
 	        		if(!isNumber(data.get(j)[2]) || !isNumber(data.get(j)[3]))
 	        			error = "Error. Invalid input.";
 	        	
-	        	//check if match no is valid
+	        	// check if match no is valid
 	        	for(int i = 0; i < data.get(0)[1].length(); i++) {
 	        		if(isNumber(data.get(0)[1].charAt(i)+"")){
 	        		}else {
@@ -114,9 +114,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 	        		}
 	        	}
 	        	
-	        	
+	        	// if no error, input match data
 	        	if(error.isEmpty()) {
-					// input match data
 					for (int i = 2; i < 4; i++) {
 						String[] match_data = new String[10];
 						for (int j = 0; j < 10; j++)

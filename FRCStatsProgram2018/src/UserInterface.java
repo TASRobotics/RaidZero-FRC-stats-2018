@@ -19,7 +19,7 @@ public class UserInterface extends JFrame implements MouseListener {
 	public UserInterface(Competition comp) {
 		super("Raid Zero FRC 2018");
 		try {
-			raidZero = ImageIO.read(new File("garigari.jpg"));
+			raidZero = ImageIO.read(new File("meme.jpg"));
 		} catch (Exception e) {}
 
 		setBackground(Color.WHITE);
