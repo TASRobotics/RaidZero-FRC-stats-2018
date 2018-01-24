@@ -59,7 +59,7 @@ public class UserInterface extends JFrame implements MouseListener {
 			window.drawString("Match", 510, 850);
 			window.drawString(competition.name, 100, 100);
 			window.setColor(new Color(30, 30, 30));
-			window.drawString("created by Stats Code Team", 1200, 980);
+			window.drawString("created by garigarikun", 1200, 980);
 
 			isFirstRun = false;
 		}
