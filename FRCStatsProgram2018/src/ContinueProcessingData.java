@@ -144,7 +144,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 					}
 
 					// transfer file to another directory for storage
-					File csv_file = new File(csv_filepath);
+					File csv_file = testFile;
 					File source = csv_file;
 					File dest = new File(directory_path + "\\FRC Match File Storage\\" + data.get(0)[1] + ".csv");
 					try {
