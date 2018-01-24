@@ -28,15 +28,16 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 		BufferedImage img = null;
 		try {
 			if (directory.list().length > 0) {
-				for (String fileName: directory.list()) {
+				for (String fileName : directory.list()) {
 					System.out.println(directory_path + "\\" + fileName);
 					img = ImageIO.read(new File(directory_path + "\\" + fileName));
-					if (img == null) continue;
+					if (img == null)
+						continue;
 
-					//get team number, check if robot exists
+					// get team number, check if robot exists
 					String team = fileName.substring(0, fileName.indexOf("."));
 					if (competition.botExists(team)) {
-						
+
 						// try setting photo
 						try {
 							competition.getBot(team).photo = img;
@@ -61,14 +62,20 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 		}
 
 		// if the a file called Match.csv exists, set the file path to it
-		boolean check = new File(directory_path + "\\Match.csv").exists();
-		String csv_filepath = "";
-		if (check) csv_filepath = directory_path + "\\Match.csv";
+
+		File testFile = null;
+
+		try {
+			testFile = new File(directory_path).listFiles()[0];
+		} catch (Exception e) {
+			System.out.println("something's wrong and I don't know what");
+		}
 
 		// if the CSV file path is not empty, read in the file
-		if (!csv_filepath.isEmpty()) {
+		if (testFile != null && testFile.getName().startsWith("Match") && testFile.getName().endsWith(".csv")) {
+			
 			try {
-				File file = new File(csv_filepath);
+				File file = testFile;
 				Scanner input = new Scanner(file);
 				ArrayList<String[]> data = new ArrayList<String[]>();
 
@@ -81,41 +88,43 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 					data.add(values);
 				}
 				input.close();
-				
+
 				// check for errors
 				String error = "";
-				
+
 				// check rows and columns
-	        	if(data.size() > 12 || data.get(0).length != 4) 
-	        		error = "Error. Please type in an available cell";
-	        		        	
-	        	// check team numbers
-	        	if(!competition.matches.get(Integer.parseInt(data.get(0)[1]
-	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[2]))
-	        		error = "Error. Invalid Team Number";
-	        	if(!competition.matches.get(Integer.parseInt(data.get(0)[1]
-	        			.substring(0, data.get(0)[1].indexOf("-")))-1).botExists(data.get(2)[3])) 
-	        		error = "Error. Invalid Team Number";
-   	
-	        	// check if input is a number
-	        	for(int j = 3; j < 11; j++)
-	        		if(!isNumber(data.get(j)[2]) || !isNumber(data.get(j)[3]))
-	        			error = "Error. Invalid input.";
-	        	
-	        	// check if match no is valid
-	        	for(int i = 0; i < data.get(0)[1].length(); i++) {
-	        		if(isNumber(data.get(0)[1].charAt(i)+"")){
-	        		}else {
-	        			if(data.get(0)[1].charAt(i) != '-') {
-	        				error = "Error. Invalid Match number. " + data.get(0)[1].charAt(i);
-	        				break;
-	        			}
-	        			break;
-	        		}
-	        	}
-	        	
-	        	// if no error, input match data
-	        	if(error.isEmpty()) {
+				if (data.size() > 12 || data.get(0).length != 4)
+					error = "Error. Please type in an available cell";
+
+				// check team numbers
+				if (!competition.matches
+						.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
+						.botExists(data.get(2)[2]))
+					error = "Error. Invalid Team Number";
+				if (!competition.matches
+						.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
+						.botExists(data.get(2)[3]))
+					error = "Error. Invalid Team Number";
+
+				// check if input is a number
+				for (int j = 3; j < 11; j++)
+					if (!isNumber(data.get(j)[2]) || !isNumber(data.get(j)[3]))
+						error = "Error. Invalid input.";
+
+				// check if match no is valid
+				for (int i = 0; i < data.get(0)[1].length(); i++) {
+					if (isNumber(data.get(0)[1].charAt(i) + "")) {
+					} else {
+						if (data.get(0)[1].charAt(i) != '-') {
+							error = "Error. Invalid Match number. " + data.get(0)[1].charAt(i);
+							break;
+						}
+						break;
+					}
+				}
+
+				// if no error, input match data
+				if (error.isEmpty()) {
 					for (int i = 2; i < 4; i++) {
 						String[] match_data = new String[10];
 						for (int j = 0; j < 10; j++)
@@ -124,7 +133,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 								.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
 								.inputData(match_data);
 					}
-	
+
 					// input robot data
 					for (int i = 2; i < 4; i++) {
 						String[] bot_data = new String[10];
@@ -133,7 +142,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 							bot_data[j] = data.get(j + 2)[i];
 						competition.getBot(data.get(2)[i]).inputData(bot_data);
 					}
-	
+
 					// transfer file to another directory for storage
 					File csv_file = new File(csv_filepath);
 					File source = csv_file;
@@ -144,23 +153,23 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 						JOptionPane.showMessageDialog(null, "Error in copying file to storage.");
 					}
 					System.out.println(csv_file.delete());
-	        	}else {
-	        		JOptionPane.showMessageDialog(null, error);
-	        	}        
+				} else {
+					JOptionPane.showMessageDialog(null, error);
+				}
 			} catch (Exception e) {
 				System.out.println("Error " + e);
 				JOptionPane.showMessageDialog(null, "Error in reading excel file. Please check.");
 			}
 		}
 	}
-	
-	//method to check if number is numeric
+
+	// method to check if number is numeric
 	public boolean isNumber(String num) {
 		try {
-	   		Integer.parseInt(num);
-	   		return true;
-	   	}catch(Exception e){
-	  		return false;
-	   	}
+			Integer.parseInt(num);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
