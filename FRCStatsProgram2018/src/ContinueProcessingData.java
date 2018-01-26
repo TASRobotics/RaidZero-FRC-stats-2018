@@ -61,18 +61,20 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 			System.out.println("Error in reading image.");
 		}
 
-		// if the a file called Match.csv exists, set the file path to it
-
+		// if a file starts with "Match" and ends with ".CSV", then set CSV file path
 		File testFile = null;
-
 		try {
-			testFile = new File(directory_path).listFiles()[0];
+			File[] testFiles = new File(directory_path).listFiles();
+			for(File f: testFiles) 
+				if(f.getName().startsWith("Match") && f.getName().endsWith(".csv"))
+					testFile = f;	
 		} catch (Exception e) {
-			System.out.println("something's wrong and I don't know what");
+			System.out.println("Can't find directory path.");
 		}
 
 		// if the CSV file path is not empty, read in the file
 		if (testFile != null && testFile.getName().startsWith("Match") && testFile.getName().endsWith(".csv")) {
+			System.out.println("detected");
 			
 			try {
 				File file = testFile;
@@ -146,7 +148,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 					// transfer file to another directory for storage
 					File csv_file = testFile;
 					File source = csv_file;
-					File dest = new File(directory_path + "\\FRC Match File Storage\\" + data.get(0)[1] + ".csv");
+					File dest = new File(directory_path + "\\FRC Match File Storage");
 					try {
 						FileUtils.copyFileToDirectory(source, dest);
 					} catch (Exception e) {

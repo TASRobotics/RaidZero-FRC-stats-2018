@@ -23,6 +23,7 @@ public class RowNumberTable extends JTable
 		getColumnModel().getColumn(0).setPreferredWidth(50);
 		setPreferredScrollableViewportSize(getPreferredSize());
 	}
+	
 
 	@Override
 	public void addNotify(){

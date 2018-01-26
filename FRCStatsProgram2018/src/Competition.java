@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 public class Competition implements Serializable {
+	
 	String name;
 	String inputDir;
 	String url;
