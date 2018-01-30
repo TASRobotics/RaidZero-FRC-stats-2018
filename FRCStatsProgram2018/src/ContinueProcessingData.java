@@ -22,7 +22,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 
 	// method to fetch data from local directory, called /5 seconds in runner
 	public void run() {
-
+		
+		
 		// read photos
 		File directory = new File(directory_path);
 		BufferedImage img = null;
