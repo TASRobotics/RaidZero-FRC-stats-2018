@@ -30,7 +30,13 @@ public class Robot implements Serializable {
     //input data for one match
     public void inputData(String[] d){
     	//match#, A scale, A switch, T scale, T switch, exchange zone, climb, portal, floor, notes
-    	data.add(d);
+    	boolean match_data_exist = false;
+    	for(int i = 0; i < data.size(); i++) {
+    		if(data.get(i)[0].equals(d[0])) {
+    			data.set(i, d); match_data_exist = true; break;
+    		}
+    	}
+    	if(!match_data_exist) data.add(d);
     	
     	//update max
     	if(Integer.parseInt(d[3]) > max_t_scale) max_t_scale = Integer.parseInt(d[3]);
