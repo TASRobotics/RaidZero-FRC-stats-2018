@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+
 import org.apache.commons.io.FileUtils;
 
 public class ContinueProcessingData extends TimerTask implements Serializable {
@@ -22,8 +23,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 
 	// method to fetch data from local directory, called /5 seconds in runner
 	public void run() {
-		
-		
+
 		// read photos
 		File directory = new File(directory_path);
 		BufferedImage img = null;
@@ -66,31 +66,68 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 		File testFile = null;
 		try {
 			File[] testFiles = new File(directory_path).listFiles();
-			for(File f: testFiles) 
-				if(f.getName().startsWith("Match") && f.getName().endsWith(".csv"))
-					testFile = f;	
+			for (File f : testFiles)
+				if (f.getName().startsWith("Match") && f.getName().endsWith(".csv"))
+					testFile = f;
 		} catch (Exception e) {
 			System.out.println("Can't find directory path.");
 		}
 
 		// if the CSV file path is not empty, read in the file
-		if (testFile != null && testFile.getName().startsWith("Match") && testFile.getName().endsWith(".csv")) {
+		if (testFile != null) {
 			System.out.println("detected");
-			
+
+			/**
+			 * Workbook wb = null; PrintStream out = null;
+			 * 
+			 * try { System.out.println(testFile.getAbsolutePath()); wb = new
+			 * XSSFWorkbook(testFile); } catch (InvalidFormatException | IOException e2) {
+			 * e2.printStackTrace(); }
+			 * 
+			 * DataFormatter formatter = new DataFormatter();
+			 * 
+			 * try { out = new PrintStream(new
+			 * FileOutputStream(testFile.getAbsolutePath().replace(".xlsx", ".csv")), true,
+			 * "UTF-8"); } catch (UnsupportedEncodingException | FileNotFoundException e1) {
+			 * e1.printStackTrace(); }
+			 * 
+			 * for (Sheet sheet : wb) { for (Row row : sheet) { boolean firstCell = true;
+			 * for (Cell cell : row) { if (!firstCell) out.print(','); String text =
+			 * formatter.formatCellValue(cell); out.print(text); firstCell = false; }
+			 * out.println(); } }
+			 * 
+			 * testFile = new File(testFile.getAbsolutePath().replaceAll(".xlsx", ".csv"));
+			 **/
+
 			try {
 				File file = testFile;
 				Scanner input = new Scanner(file);
 				ArrayList<String[]> data = new ArrayList<String[]>();
+				ArrayList<String[]> editedData = new ArrayList<String[]>();
 
 				// transfer CSV cells to a matrix
 				while (input.hasNextLine()) {
 					String row = input.nextLine();
-					String[] values = new String[4];
+					String[] values = new String[12];
 					for (int i = 0; i < row.split(",").length; i++)
 						values[i] = row.split(",")[i];
+
 					data.add(values);
+
+					String[] values2 = new String[4];
+
+					for (int j = 0; j < data.get(0).length; j++) {
+						values2[j] = data.get(0)[j];
+					}
+
+					editedData.add(values2);
+
 				}
+				
+				data = editedData;
+
 				input.close();
+				System.out.println(data.size());
 
 				// check for errors
 				String error = "";
