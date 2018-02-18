@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
+// only change this class if necessary
+
 public class RowNumberTable extends JTable 
 	implements ChangeListener, PropertyChangeListener, TableModelListener {
 	
@@ -24,7 +26,6 @@ public class RowNumberTable extends JTable
 		setPreferredScrollableViewportSize(getPreferredSize());
 	}
 	
-
 	@Override
 	public void addNotify(){
 		super.addNotify();
@@ -37,7 +38,7 @@ public class RowNumberTable extends JTable
 		}
 	}
 
-	//delegate method to main table
+	// delegate method to main table
 	@Override
 	public int getRowCount(){
 		return main.getRowCount();
@@ -51,23 +52,23 @@ public class RowNumberTable extends JTable
 		return rowHeight;
 	}
 
-	//no model is being used for this table so just use the row number as the value of the cell
+	// no model is being used for this table so just use the row number as the value of the cell
 	@Override
 	public Object getValueAt(int row, int column){
 		return Integer.toString(row + 1);
 	}
 
-	//didn't edit data in the main TableModel by mistake
+	// didn't edit data in the main TableModel by mistake
 	@Override
 	public boolean isCellEditable(int row, int column){
 		return false;
 	}
 
-	//do nothing since the table ignores the model
+	// do nothing since the table ignores the model
 	@Override
 	public void setValueAt(Object value, int row, int column) {}
 
-	//implement the change listener
+	// implement the change listener
 	public void stateChanged(ChangeEvent e){
 		//  Keep the scrolling of the row table in sync with main table
 		JViewport viewport = (JViewport) e.getSource();
@@ -75,7 +76,7 @@ public class RowNumberTable extends JTable
 		scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
 	}
 
-	//implement the property change listener
+	// implement the property change listener
 	public void propertyChange(PropertyChangeEvent e){
 		//  Keep the row table in sync with the main table
 		if ("selectionModel".equals(e.getPropertyName())) setSelectionModel( main.getSelectionModel() );
@@ -86,13 +87,13 @@ public class RowNumberTable extends JTable
 		}
 	}
 
-	//implement the table model listener
+	// implement the table model listener
 	@Override
 	public void tableChanged(TableModelEvent e){
 		revalidate();
 	}
 
-	//attempt to mimic the table header renderer
+	// attempt to mimic the table header renderer
 	private static class RowNumberRenderer extends DefaultTableCellRenderer{
 		public RowNumberRenderer(){
 			setHorizontalAlignment(JLabel.CENTER);

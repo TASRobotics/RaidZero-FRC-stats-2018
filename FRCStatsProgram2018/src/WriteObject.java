@@ -2,20 +2,18 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
 
-public class WriteObject {
-	
+public class WriteObject {	
+	// method to save database
     public void serializeDatabase(StatsDatabase2018 database, String fileName) {
-    	
         FileOutputStream fout = null;
         ObjectOutputStream oos = null;
-        //write object
         try {
             fout = new FileOutputStream(fileName);
             oos = new ObjectOutputStream(fout);
             oos.writeObject(database);
             oos.flush();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex + "Error in writing object.");  
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error in writing object: " + e, "Error", JOptionPane.INFORMATION_MESSAGE);  
         }
     } 
 }

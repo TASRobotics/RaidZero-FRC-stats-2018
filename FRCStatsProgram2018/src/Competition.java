@@ -15,6 +15,7 @@ public class Competition implements Serializable {
 	ArrayList<Match> matches;
 	ArrayList<Robot> robots;
 	
+	// constructor
 	public Competition(String n, String u, String d) {
 		name = n;
 		url = u;
@@ -24,7 +25,7 @@ public class Competition implements Serializable {
 		scrape();
 	}
 	
-	//if robot with name exists, return true
+	// if robot with name exists, return true
 	public boolean botExists(String t) {
 		for (Robot bot: robots) {
 			System.out.println(bot.name.substring(0, bot.name.indexOf(" ")));
@@ -34,7 +35,7 @@ public class Competition implements Serializable {
 		return false;
 	}
 	
-	//if robot with name exists, return the Robot
+	// if robot with name exists, return the Robot
 	public Robot getBot(String t) {
 		for(Robot bot: robots) 
 			if(bot.name.substring(0, bot.name.indexOf(" ")).equals(t)) 
@@ -42,7 +43,7 @@ public class Competition implements Serializable {
 		return null;
 	}
 
-	//if match exists, return the match
+	// if match exists, return the match
 	public Match getMatch(int match_number) {
 		try {
 			return matches.get(match_number);
@@ -53,16 +54,16 @@ public class Competition implements Serializable {
 		}
 	}
 	
-	//method for scraping from blue alliance
+	// method for scraping from blue alliance
 	public void scrape() {
-		//event page
+		// event page
     	final JDialog waitDialog = new JDialog(new javax.swing.JFrame(), "Loading.");    
         waitDialog.setVisible(true);
     	Document mainDocument = null;
     	try {
 			mainDocument = Jsoup.connect(url).get();
 			
-			//scrape teams
+			// scrape teams
 			Document teams_page = null;
 			try {
 				teams_page = Jsoup.connect(url + "#teams").get();
@@ -72,7 +73,7 @@ public class Competition implements Serializable {
 				JOptionPane.showMessageDialog(null, "Error in scraping teams.");
 			}
 			
-			//find number of qualification matches	
+			// find number of qualification matches	
 			int qualsSize = 0;
 			for(int i = 150; i >= 0; i--){
 				Elements quals = mainDocument.select("a:contains(Quals " + i + ")");
@@ -82,7 +83,7 @@ public class Competition implements Serializable {
 			}
 			System.out.println("quals size: " + qualsSize);
 			
-			//scrape matches
+			// scrape matches
 			Document results_page = null;
 			try {
 				results_page = Jsoup.connect(url + "#results").get();

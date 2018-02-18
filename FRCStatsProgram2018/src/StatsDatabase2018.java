@@ -5,11 +5,12 @@ public class StatsDatabase2018 implements Serializable {
 	
 	ArrayList<Competition> competitions = new ArrayList<Competition>();
 	
+	// method to add competition to database
 	public void addCompetition(Competition c) {
 		competitions.add(c);
 	}
     
-	//return the competition with the name
+	// return the competition with the name
 	public Competition getCompetition(String name) {
 		for (Competition comp: competitions) if (comp.name.equals(name)) return comp;		
 		return null;
