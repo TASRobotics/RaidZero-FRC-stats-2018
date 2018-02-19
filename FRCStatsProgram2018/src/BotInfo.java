@@ -26,16 +26,18 @@ public class BotInfo extends JFrame {
 	private JPanel contentPane;
 	private JTable avgStatsTable;
 	private String teamName;
+	int max;
 
 	// constructor parameters: Competition competition, String team number
 	public BotInfo(Competition competition, String t) {
 		super(competition.getBot(t).name);
 		robot = competition.getBot(t);
 		teamName = robot.name;
+		max = 12;
 		init();
 		setVisible(true);
 	}
-	
+
 	// initialize the frame
 	private void init() {
 
@@ -55,15 +57,21 @@ public class BotInfo extends JFrame {
 		avgStatsTable.setEnabled(false);
 		avgStatsTable.addComponentListener(new ComponentListener() { // Resizes table to fit
 			@Override
-			public void componentShown(ComponentEvent e) {}
+			public void componentShown(ComponentEvent e) {
+			}
+
 			@Override
 			public void componentResized(ComponentEvent e) {
 				avgStatsTable.setRowHeight(avgStatsTable.getHeight() / avgStatsTable.getRowCount());
 			}
+
 			@Override
-			public void componentMoved(ComponentEvent e) {}
+			public void componentMoved(ComponentEvent e) {
+			}
+
 			@Override
-			public void componentHidden(ComponentEvent e) {}
+			public void componentHidden(ComponentEvent e) {
+			}
 		});
 
 		// spot for photo
@@ -79,17 +87,16 @@ public class BotInfo extends JFrame {
 		avgStatsTable.setForeground(Color.BLACK);
 		avgStatsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		avgStatsTable.setFont(new Font("Tahoma", Font.BOLD, 18));
-		avgStatsTable.setModel(new DefaultTableModel(
-				new Object[][] { { "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
-						{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch }, 
-						{"Auto Cross Line", robot.avg_a_cross},
-						{ "Teleop Scale", robot.avg_t_scale }, { "Max Teleop Scale", robot.max_t_scale },
-						{ "Teleop Switch", robot.avg_t_switch },{ "Max Teleop Switch", robot.max_t_switch },						
-						{ "Exchange Zone", robot.avg_e_z }, { "Max Exchange Zone", robot.max_e_z }, 
-						{ "Climb", robot.avg_c }, { "Floor Pickup", robot.floor }},
+		avgStatsTable.setModel(new DefaultTableModel(new Object[][] {
+				{ "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
+				{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch },
+				{ "Auto Cross Line", robot.avg_a_cross }, { "Teleop Scale", robot.avg_t_scale },
+				{ "Max Teleop Scale", robot.max_t_scale }, { "Teleop Switch", robot.avg_t_switch },
+				{ "Max Teleop Switch", robot.max_t_switch }, { "Exchange Zone", robot.avg_e_z },
+				{ "Max Exchange Zone", robot.max_e_z }, { "Climb", robot.avg_c }, { "Floor Pickup", robot.floor } },
 				new String[] { "Average ", "Values" }));
 
-		//team name
+		// team name
 		JLabel lblTeamName = new JLabel("<html>Team Name:" + teamName + "</html>");
 		lblTeamName.setVerticalAlignment(SwingConstants.TOP);
 		lblTeamName.setFont(new Font("Tahoma", Font.BOLD, 26));
@@ -107,11 +114,12 @@ public class BotInfo extends JFrame {
 		topPanel.setLayout(gl_topPanel);
 
 		// fill in photo if exists
-		if (robot.photo != null) robotImage.setIcon(new ImageIcon(robot.photo));
+		if (robot.photo != null)
+			robotImage.setIcon(new ImageIcon(robot.photo));
 
 		// bottom panel
 		JPanel matchPanel = new JPanel();
-		
+
 		// group layout image and team name
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
@@ -136,14 +144,44 @@ public class BotInfo extends JFrame {
 				.addGap(12).addComponent(matchPanel, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)));
 
 		// add text area for match info and scroll pane
-		JEditorPane text_area = new JEditorPane("text/html", "");
-		text_area.setFont(new Font("Tahoma", Font.PLAIN, 28));
-		text_area.setText(convertToFormat(robot.returnData()));
-		text_area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-		text_area.setEditable(false);
-		JScrollPane scroll = new JScrollPane(text_area, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		// JEditorPane text_area = new JEditorPane("text/html", "");
+		// text_area.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		// text_area.setText(convertToFormat(robot.returnData()));
+		// text_area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES,
+		// Boolean.TRUE);
+		// text_area.setEditable(false);
+
+		// columns for the table
+		String[] columnNames = { "", "", "" };
+
+		int index = 0;
+		String[] arrData = splitMatchString(convertToFormat(robot.returnData()));
+
+		// put in values for table
+		Object[][] data = new Object[max / 3][3];
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 3; j++) {
+				System.out.println(arrData[index]);
+				data[i][j] = arrData[index];
+				index++;
+			}
+		}
+
+		// set up the table
+		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+		JTable table = new JTable(model);
+
+		table.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		table.setRowHeight(70);
+		table.setEnabled(false);
+		table.setFillsViewportHeight(true);
+		table.setAutoCreateRowSorter(true);
+		table.getColumnModel().getColumn(0).setPreferredWidth(400);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
+		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
 		// group layout for match panel
 		GroupLayout gl_matchPanel = new GroupLayout(matchPanel);
 		gl_matchPanel.setHorizontalGroup(gl_matchPanel.createParallelGroup(Alignment.LEADING)
@@ -156,41 +194,79 @@ public class BotInfo extends JFrame {
 
 		// set team name
 		lblTeamName.setText("<html>" + teamName + "</html>");
-		
+
 		contentPane.setLayout(gl_contentPane);
 	}
-	
+
+	// method to split the string into multiple "match" substring
+	public String[] splitMatchString(String s1) {
+
+		String[] output = new String[max];
+		int index = 0;
+
+		while (s1.indexOf("<b>Match#:") != -1) {
+			System.out.println("inside");
+
+			String orgString = s1;
+
+			int orgIndex = s1.indexOf("<b>Match#:");
+			s1 = s1.substring(orgIndex + 10);
+			int editedIndex = s1.indexOf("<b>Match#:");
+
+			s1 = orgString;
+
+			if (!(editedIndex < 0))
+				output[index] = s1.substring(orgIndex, editedIndex);
+			else if (!(orgIndex < 0)) {
+				System.out.println(orgIndex);
+				System.out.println(index);
+				System.out.println("Length:" + s1.length());
+				try {
+					output[index] = s1.substring(orgIndex);
+				} catch (ArrayIndexOutOfBoundsException e) {
+					break;
+				}
+			}
+			index++;
+
+			if (editedIndex != -1)
+				s1 = s1.substring(editedIndex);
+
+		}
+
+		return output;
+	}
+
 	// method to convert output string into desired format
-	public String convertToFormat(String s) {
-		String output = "";	
-		for (int i = 0; i < s.length(); i++) {
+	public String convertToFormat(String s1) {
+
+		String output = "";
+		for (int i = 0; i < s1.length(); i++) {
 			try {
-				if (s.substring(i, i+7).equals("Match#:")) {
-					output += s.substring(0, i);
-					output += "<br/><br/><b>" + s.substring(i, i+7) + "</b>";
-					s = s.substring(i+7);
+				if (s1.substring(i, i + 7).equals("Match#:")) {
+					output += s1.substring(0, i);
+					output += "<br/><br/><b>" + s1.substring(i, i + 7) + "</b>";
+					s1 = s1.substring(i + 7);
 					i = 0;
-				}else if (s.substring(i, i+8).equals("AScale#:") 
-						|| s.substring(i, i+9).equals("ASwitch#:")
-						|| s.substring(i, i+7).equals("ACross:")
-						|| s.substring(i, i+8).equals("TScale#:")
-						|| s.substring(i, i+9).equals("TSwitch#:")) {
-					output += s.substring(0, i);
-					output += "<br/><b>" + s.substring(i, i+1) + "</b>";
-					s = s.substring(i+1);
+				} else if (s1.substring(i, i + 8).equals("AScale#:") || s1.substring(i, i + 9).equals("ASwitch#:")
+						|| s1.substring(i, i + 7).equals("ACross:") || s1.substring(i, i + 8).equals("TScale#:")
+						|| s1.substring(i, i + 9).equals("TSwitch#:")) {
+					output += s1.substring(0, i);
+					output += "<br/><b>" + s1.substring(i, i + 1) + "</b>";
+					s1 = s1.substring(i + 1);
 					i = 0;
-				}else if (s.substring(i, i+6).equals("Climb:")
-						|| s.substring(i, i+6).equals("Floor:")
-						|| s.substring(i, i+6).equals("Notes:")
-						|| s.substring(i, i+14).equals("Exchange Zone:")) {
-					output += s.substring(0, i);
+				} else if (s1.substring(i, i + 6).equals("Climb:") || s1.substring(i, i + 6).equals("Floor:")
+						|| s1.substring(i, i + 6).equals("Notes:")
+						|| s1.substring(i, i + 14).equals("Exchange Zone:")) {
+					output += s1.substring(0, i);
 					output += "<br/>";
-					s = s.substring(i);
+					s1 = s1.substring(i);
 					i = 0;
 				}
-			}catch(Exception e) {}
+			} catch (Exception e) {
+			}
 		}
-		output += s;
+		output += s1;
 		return output;
 	}
 }
