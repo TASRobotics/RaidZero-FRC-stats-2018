@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
@@ -18,6 +19,10 @@ import javax.swing.JEditorPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class BotInfo extends JFrame {
 
@@ -33,6 +38,7 @@ public class BotInfo extends JFrame {
 		super(competition.getBot(t).name);
 		robot = competition.getBot(t);
 		teamName = robot.name;
+		System.out.println("cool");
 		max = 12;
 		init();
 		setVisible(true);
@@ -161,8 +167,8 @@ public class BotInfo extends JFrame {
 		Object[][] data = new Object[max / 3][3];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 3; j++) {
-				System.out.println(arrData[index]);
-				data[i][j] = arrData[index];
+				System.out.println(arrData[index] + "Index: " + index);
+				data[i][j] = "<html>"+arrData[index] + "</html>";
 				index++;
 			}
 		}
@@ -171,14 +177,20 @@ public class BotInfo extends JFrame {
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		JTable table = new JTable(model);
 
+
 		table.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		table.setRowHeight(70);
+		table.setRowHeight(315);
 		table.setEnabled(false);
 		table.setFillsViewportHeight(true);
 		table.setAutoCreateRowSorter(true);
 		table.getColumnModel().getColumn(0).setPreferredWidth(400);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		table.getColumnModel().getColumn(1).setPreferredWidth(400);
+		table.getColumnModel().getColumn(2).setPreferredWidth(400);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
+		table.setShowGrid(false);
+		table.setIntercellSpacing(new Dimension(0, 0));
+		
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -269,4 +281,5 @@ public class BotInfo extends JFrame {
 		output += s1;
 		return output;
 	}
+	
 }
