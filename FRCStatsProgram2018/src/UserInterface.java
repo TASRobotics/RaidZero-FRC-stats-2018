@@ -38,6 +38,7 @@ public class UserInterface extends JFrame implements MouseListener {
 		isFirstRun = true;
 		setSize(1600, 1000);
 		setBackground(Color.BLACK);
+		setResizable(false);
 		setVisible(true);
 		addMouseListener(this);
 

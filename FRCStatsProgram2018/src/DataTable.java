@@ -23,10 +23,10 @@ public class DataTable extends JFrame {
         
         // columns for the table
         String[] columnNames = {"Team", "Avg A Scale", "Avg A Switch", "Avg A Cross Line", "Avg T Scale", "Max T Scale",
-        		"Avg T Switch", "Max T Switch", "Avg EZ", "Max EZ", "Avg Climb", "Floor"};    
+        		"Avg T Switch R", "Avg T Switch B", "Max T Switch", "Avg EZ", "Max EZ", "Avg Climb", "Floor"};    
         
         // put in values for table
-        Object[][] data = new Object[competition.robots.size()][12];
+        Object[][] data = new Object[competition.robots.size()][13];
         for(int i = 0; i < competition.robots.size(); i++){          
             data[i][0] = "<html>" + competition.robots.get(i).name + "</html>";
             data[i][1] = competition.robots.get(i).avg_a_scale;
@@ -34,12 +34,13 @@ public class DataTable extends JFrame {
             data[i][3] = competition.robots.get(i).avg_a_cross;
             data[i][4] = competition.robots.get(i).avg_t_scale;
             data[i][5] = competition.robots.get(i).max_t_scale;
-            data[i][6] = competition.robots.get(i).avg_t_switch;
-            data[i][7] = competition.robots.get(i).max_t_switch;
-            data[i][8] = competition.robots.get(i).avg_e_z;
-            data[i][9] = competition.robots.get(i).max_e_z;
-            data[i][10] = competition.robots.get(i).avg_c;
-            data[i][11] = competition.robots.get(i).floor;
+            data[i][6] = competition.robots.get(i).avg_t_switch_r;
+            data[i][7] = competition.robots.get(i).avg_t_switch_b;
+            data[i][8] = competition.robots.get(i).max_t_switch;
+            data[i][9] = competition.robots.get(i).avg_e_z;
+            data[i][10] = competition.robots.get(i).max_e_z;
+            data[i][11] = competition.robots.get(i).avg_c;
+            data[i][12] = competition.robots.get(i).floor;
         }    
         
         // set up the table

@@ -1,12 +1,17 @@
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,8 +26,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import org.apache.commons.lang3.StringUtils;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
+//import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class BotInfo extends JFrame {
 
@@ -31,15 +37,16 @@ public class BotInfo extends JFrame {
 	private JPanel contentPane;
 	private JTable avgStatsTable;
 	private String teamName;
+	private Competition competition;
 	int max;
 
 	// constructor parameters: Competition competition, String team number
-	public BotInfo(Competition competition, String t) {
-		super(competition.getBot(t).name);
-		robot = competition.getBot(t);
+	public BotInfo(Competition comp, String t) {
+		super(comp.getBot(t).name);
+		robot = comp.getBot(t);
 		teamName = robot.name;
-		System.out.println("cool");
-		max = 12;
+		max = 24;
+		competition = comp;
 		init();
 		setVisible(true);
 	}
@@ -81,8 +88,8 @@ public class BotInfo extends JFrame {
 		});
 
 		// spot for photo
-		JLabel robotImage = new JLabel("No Image Available :("); // default
-		robotImage.setPreferredSize(new Dimension(350, 275));
+		JLabel robotImage = new JLabel(""); // default
+		robotImage.setPreferredSize(new Dimension(1500, 1500));
 		robotImage.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// fill in table for averages
@@ -97,7 +104,7 @@ public class BotInfo extends JFrame {
 				{ "<html><b>Average Stats</b></html>", "<html><b>Values</b></html>" },
 				{ "Auto Scale", robot.avg_a_scale }, { "Auto Switch", robot.avg_a_switch },
 				{ "Auto Cross Line", robot.avg_a_cross }, { "Teleop Scale", robot.avg_t_scale },
-				{ "Max Teleop Scale", robot.max_t_scale }, { "Teleop Switch", robot.avg_t_switch },
+				{ "Max Teleop Scale", robot.max_t_scale }, { "Teleop Switch R", robot.avg_t_switch_r }, {"Teleop Switch B", robot.avg_t_switch_b},
 				{ "Max Teleop Switch", robot.max_t_switch }, { "Exchange Zone", robot.avg_e_z },
 				{ "Max Exchange Zone", robot.max_e_z }, { "Climb", robot.avg_c }, { "Floor Pickup", robot.floor } },
 				new String[] { "Average ", "Values" }));
@@ -119,9 +126,20 @@ public class BotInfo extends JFrame {
 						.addContainerGap(25, Short.MAX_VALUE)));
 		topPanel.setLayout(gl_topPanel);
 
-		// fill in photo if exists
-		if (robot.photo != null)
-			robotImage.setIcon(new ImageIcon(robot.photo));
+		// fill in photo if exists		
+		if(robot.photo != null){
+	    	BufferedImage img = robot.photo;
+	    	Image newImg = img;
+	    	if(img.getHeight()>300){
+	    		int newWid = img.getWidth()*300/img.getHeight();
+				newImg =  img.getScaledInstance(newWid, 300, Image.SCALE_SMOOTH);;
+			}
+			if(img.getWidth()>300){
+				int newHt = img.getHeight()*300/img.getWidth();
+				newImg = img.getScaledInstance(300, newHt, Image.SCALE_SMOOTH);
+			}    	   
+	    	robotImage.setIcon(new ImageIcon(newImg)); 
+	    }
 
 		// bottom panel
 		JPanel matchPanel = new JPanel();
@@ -149,14 +167,6 @@ public class BotInfo extends JFrame {
 								GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)))
 				.addGap(12).addComponent(matchPanel, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)));
 
-		// add text area for match info and scroll pane
-		// JEditorPane text_area = new JEditorPane("text/html", "");
-		// text_area.setFont(new Font("Tahoma", Font.PLAIN, 28));
-		// text_area.setText(convertToFormat(robot.returnData()));
-		// text_area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES,
-		// Boolean.TRUE);
-		// text_area.setEditable(false);
-
 		// columns for the table
 		String[] columnNames = { "", "", "" };
 
@@ -165,7 +175,7 @@ public class BotInfo extends JFrame {
 
 		// put in values for table
 		Object[][] data = new Object[max / 3][3];
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < max / 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				System.out.println(arrData[index] + "Index: " + index);
 				data[i][j] = "<html>"+arrData[index] + "</html>";
@@ -176,7 +186,6 @@ public class BotInfo extends JFrame {
 		// set up the table
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		JTable table = new JTable(model);
-
 
 		table.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		table.setRowHeight(315);
@@ -214,38 +223,31 @@ public class BotInfo extends JFrame {
 	public String[] splitMatchString(String s1) {
 
 		String[] output = new String[max];
-		int index = 0;
-
-		while (s1.indexOf("<b>Match#:") != -1) {
-			System.out.println("inside");
-
-			String orgString = s1;
-
-			int orgIndex = s1.indexOf("<b>Match#:");
-			s1 = s1.substring(orgIndex + 10);
-			int editedIndex = s1.indexOf("<b>Match#:");
-
-			s1 = orgString;
-
-			if (!(editedIndex < 0))
-				output[index] = s1.substring(orgIndex, editedIndex);
-			else if (!(orgIndex < 0)) {
-				System.out.println(orgIndex);
-				System.out.println(index);
-				System.out.println("Length:" + s1.length());
-				try {
-					output[index] = s1.substring(orgIndex);
-				} catch (ArrayIndexOutOfBoundsException e) {
-					break;
-				}
+		int matches = StringUtils.countMatches(s1, "<b>Match#:");
+		if(matches == 0){
+			for(int i = 0; i < max; i++) output[i] = "";
+			return output;
+		}else if(matches == 1) {
+			output[0] = s1;
+			for(int i = 1; i < max; i++) output[i] = "";
+			return output;
+		}else {
+			int index = 0;
+			for(index = 0; index < matches-1; index++) {
+				System.out.println("index: " + index);
+				output[index] = s1.substring(0, 1);
+				s1 = s1.substring(1);
+				output[index] += s1.substring(0, s1.indexOf("<br/><br/><b>Match#:"));
+				System.out.println("ss: " + output[index]);
+				s1 = s1.substring(s1.indexOf("<br/><br/><b>Match#:"));
 			}
+			output[index] = s1;
 			index++;
-
-			if (editedIndex != -1)
-				s1 = s1.substring(editedIndex);
-
+			while(index < max-1) {
+				output[index] = "";
+				index++;
+			}
 		}
-
 		return output;
 	}
 
@@ -256,13 +258,28 @@ public class BotInfo extends JFrame {
 		for (int i = 0; i < s1.length(); i++) {
 			try {
 				if (s1.substring(i, i + 7).equals("Match#:")) {
-					output += s1.substring(0, i);
+					output += s1.substring(0, i);	
 					output += "<br/><br/><b>" + s1.substring(i, i + 7) + "</b>";
+					
+					
+					
+					int match_no = Integer.parseInt(s1.substring(i+7, s1.indexOf("AScale#:")).trim());
+					if(teamName.startsWith(competition.matches.get(match_no-1).data[0][0])
+							|| teamName.startsWith(competition.matches.get(match_no-1).data[1][0])
+							|| teamName.startsWith(competition.matches.get(match_no-1).data[2][0])) {
+						output += "<font color=\"red\"><b>RED</b></font>";
+					}else {
+						output += "<font color=\"blue\"><b>BLUE</b></font>";
+					}	
+					
+					
+					
 					s1 = s1.substring(i + 7);
 					i = 0;
 				} else if (s1.substring(i, i + 8).equals("AScale#:") || s1.substring(i, i + 9).equals("ASwitch#:")
 						|| s1.substring(i, i + 7).equals("ACross:") || s1.substring(i, i + 8).equals("TScale#:")
-						|| s1.substring(i, i + 9).equals("TSwitch#:")) {
+						|| s1.substring(i, i + 10).equals("TSwitchR#:")
+						|| s1.substring(i, i+ 10).equals("TSwitchB#:")) {
 					output += s1.substring(0, i);
 					output += "<br/><b>" + s1.substring(i, i + 1) + "</b>";
 					s1 = s1.substring(i + 1);

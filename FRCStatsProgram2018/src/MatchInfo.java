@@ -73,7 +73,8 @@ public class MatchInfo extends JFrame {
 						|| s.substring(i, i+9).equals("ASwitch#:")
 						|| s.substring(i, i+7).equals("ACross:")
 						|| s.substring(i, i+8).equals("TScale#:")
-						|| s.substring(i, i+9).equals("TSwitch#:")) {
+						|| s.substring(i, i+10).equals("TSwitchR#:")
+						|| s.substring(i, i+10).equals("TSwitchB#:")) {
 					output += s.substring(0, i);
 					output += "<br/><b>" + s.substring(i, i+1) + "</b>";
 					s = s.substring(i+1);

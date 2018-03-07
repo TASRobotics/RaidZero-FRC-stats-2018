@@ -22,8 +22,10 @@ public class Runner {
     	//open the database, if does not exist, then create new database
     	ReadObject obj = new ReadObject();
     	if(obj.deserializeCompetition("StatsDatabase2018.data") == null) {
+    		System.out.println("hi");
     		database = new StatsDatabase2018();
     	}else {
+    		System.out.println("bye");
     		database = obj.deserializeCompetition("StatsDatabase2018.data");
     	}
     	
@@ -100,6 +102,7 @@ public class Runner {
         	// open previously saved competition
         	if(database.competitions.size() == 0) {
         		JOptionPane.showMessageDialog(null, "No previous competitions.", "Error", JOptionPane.ERROR_MESSAGE);
+        		System.exit(0);
         	}else {
         		// select existing competition
 	        	JFrame chooseCompFrame = new JFrame("Select Competition");
@@ -139,7 +142,7 @@ public class Runner {
         
         // add a timer to continuously read in data
         Timer timer = new Timer();     
-        timer.schedule(new ContinueProcessingData(competition), 0, 5000); //retrieve files every 5 sec 
+        timer.schedule(new ContinueProcessingData(competition), 0, 2000); //retrieve files every 5 sec 
         
         // save to database when window is closed
         ui.addWindowListener(new java.awt.event.WindowAdapter() {

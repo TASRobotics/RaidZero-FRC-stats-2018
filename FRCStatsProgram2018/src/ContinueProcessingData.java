@@ -78,7 +78,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				// transfer CSV cells to a matrix
 				while (input.hasNextLine()) {
 					String row = input.nextLine();
-					String[] values = new String[10];
+					String[] values = new String[11];
 					for (int i = 0; i < row.split(",").length; i++)
 						values[i] = row.split(",")[i];
 					data.add(values);
@@ -89,23 +89,25 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				String error = "";
 
 				// check rows and columns
-				if (data.size() > 6 || data.get(0).length != 10)
+				if (data.size() > 6 || data.get(0).length != 11)
 					error = "Error. Please type in an available cell. File Name: " + testFile.getName();
+				
 				// check team numbers
 				if (!competition.matches
 						.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
 						.botExists(data.get(4)[0]))
 					error = "Error. Invalid Team Number. File Name: " + testFile.getName();
+				
 				if (!competition.matches
 						.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
 						.botExists(data.get(5)[0]))
 					error = "Error. Invalid Team Number. File Name: " + testFile.getName();
-
+				
 				// check if input is a number
-				for (int j = 0; j <= 8; j++)
+				for (int j = 0; j <= 9; j++)
 					if (!isNumber(data.get(4)[j]) || !isNumber(data.get(5)[j]))
 						error = "Error. Invalid input. File Name: " + testFile.getName();
-
+				
 				// check if match no is valid
 				for (int i = 0; i < data.get(0)[1].length(); i++) {
 					if (isNumber(data.get(0)[1].charAt(i) + "")) {
@@ -122,8 +124,8 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				if (error.isEmpty()) {
 					String matchNo = data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"));
 					for (int i = 4; i <= 5; i++) {
-						String[] match_data = new String[10];
-						for (int j = 0; j <= 9; j++)
+						String[] match_data = new String[11];
+						for (int j = 0; j <= 10; j++)
 							match_data[j] = data.get(i)[j];
 						competition.matches
 								.get(Integer.parseInt(matchNo) - 1)
@@ -132,9 +134,9 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 					
 					// input robot data
 					for (int i = 4; i <= 5; i++) {
-						String[] bot_data = new String[10];
+						String[] bot_data = new String[11];
 						bot_data[0] = matchNo;
-						for (int j = 1; j <= 9; j++)
+						for (int j = 1; j <= 10; j++)
 							bot_data[j] = data.get(i)[j];
 						competition.getBot(data.get(i)[0]).inputData(bot_data);
 					}
@@ -149,6 +151,7 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 						JOptionPane.showMessageDialog(null, "Error in copying file to storage. "
 								+ "File Name: " + testFile.getName() + ". Error: " + e);
 					}
+					
 					System.out.println(csv_file.delete());
 				} else {
 					JOptionPane.showMessageDialog(null, error);
