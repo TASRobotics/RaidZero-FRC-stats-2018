@@ -26,11 +26,12 @@ public class UserInterface extends JFrame implements MouseListener {
 	// constructor
 	public UserInterface(Competition comp) {
 		super("Raid Zero FRC 2018");
-		
+
 		// set up background and mouse listener
 		try {
 			raidZero = ImageIO.read(new File("meme.jpg"));
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 		setBackground(Color.WHITE);
 		competition = comp;
 		mouseX = mouseY = 0;
@@ -44,10 +45,12 @@ public class UserInterface extends JFrame implements MouseListener {
 
 		// set icon
 		BufferedImage icon = null;
-	    try {
-	        icon = ImageIO.read(getClass().getClassLoader().getResource("Raid Zero.png"));
-	    } catch (Exception e) {}
-	    if(icon != null) setIconImage(icon);
+		try {
+			icon = ImageIO.read(getClass().getClassLoader().getResource("Raid Zero.png"));
+		} catch (Exception e) {
+		}
+		if (icon != null)
+			setIconImage(icon);
 	}
 
 	// method to detect mouse clicks
@@ -65,7 +68,8 @@ public class UserInterface extends JFrame implements MouseListener {
 			window.fillRect(0, 0, 2000, 1200);
 			window.drawImage(raidZero, 0, 0, 1600, 1000, this);
 			window.setColor(new Color(50, 50, 50)); // black
-			for (int i = 100; i < 800; i += 200) window.fillRect(i, 750, 180, 180);
+			for (int i = 100; i < 800; i += 200)
+				window.fillRect(i, 750, 180, 180);
 			window.setColor(new Color(220, 220, 220)); // white
 			window.setFont(new Font("Arial", Font.BOLD, 30));
 			window.drawString("Data", 110, 800);
@@ -86,7 +90,7 @@ public class UserInterface extends JFrame implements MouseListener {
 
 	public void draw(Graphics window) {
 		if (mouseButton == MouseEvent.BUTTON1) { // left mouse button pressed
-			if (mouseX > 100 && mouseX < 280 && mouseY > 750 && mouseY < 930) { 
+			if (mouseX > 100 && mouseX < 280 && mouseY > 750 && mouseY < 930) {
 				// data table
 				new DataTable(competition);
 			} else if (mouseX > 300 && mouseX < 480 && mouseY > 750 && mouseY < 930) {
@@ -96,10 +100,14 @@ public class UserInterface extends JFrame implements MouseListener {
 					try {
 						new BotInfo(competition, teamNumber);
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, "Cannot create bot info window: " + e, "Error", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Cannot create bot info window: " + e, "Error",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
+					new DataChart(competition, teamNumber);
+
 				} else {
-					JOptionPane.showMessageDialog(null, "Robot does not exist.", "Error",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Robot does not exist.", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else if (mouseX > 500 && mouseX < 680 && mouseY > 750 && mouseY < 930) {
 				// search match
@@ -108,10 +116,12 @@ public class UserInterface extends JFrame implements MouseListener {
 					if (matchNumber <= competition.matches.size()) {
 						new MatchInfo(competition, matchNumber);
 					} else {
-						JOptionPane.showMessageDialog(null, "Cannot create match info window.", "Error", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Cannot create match info window.", "Error",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Match does not exist: " + e, "Error", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Match does not exist: " + e, "Error",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else if (mouseX > 700 && mouseX < 880 && mouseY > 750 && mouseY < 930) {
 				// settings
@@ -121,42 +131,49 @@ public class UserInterface extends JFrame implements MouseListener {
 				settings_frame.setVisible(true);
 				settings_frame.addMouseListener(this);
 				settings_frame.setLocationRelativeTo(null);
-	        	settings_frame.setResizable(false);
-	        	JPanel settings_panel = new JPanel();
-	            settings_panel.add(new JLabel("Input Directory: "));          
-	            JLabel directory = new JLabel(competition.inputDir);
-	            settings_panel.add(directory);
-	         
-	            // change input directory
-	            JButton button_change = new JButton("Change");
-	            button_change.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) { 
+				settings_frame.setResizable(false);
+				JPanel settings_panel = new JPanel();
+				settings_panel.add(new JLabel("Input Directory: "));
+				JLabel directory = new JLabel(competition.inputDir);
+				settings_panel.add(directory);
+
+				// change input directory
+				JButton button_change = new JButton("Change");
+				button_change.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
 						// file chooser
 						JFileChooser chooser = new JFileChooser();
-					    chooser.setCurrentDirectory(new java.io.File(competition.inputDir));
-					    chooser.setDialogTitle("Select Input Directory");
-					    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-					    chooser.setAcceptAllFileFilterUsed(false);
-					    int result = chooser.showOpenDialog(settings_panel);
-					    if (result == JFileChooser.APPROVE_OPTION) {
-					    	File selectedFile = chooser.getSelectedFile();
-					    	directory.setText(selectedFile.getAbsolutePath());
-					    	competition.inputDir = directory.getText();
-					    }
+						chooser.setCurrentDirectory(new java.io.File(competition.inputDir));
+						chooser.setDialogTitle("Select Input Directory");
+						chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+						chooser.setAcceptAllFileFilterUsed(false);
+						int result = chooser.showOpenDialog(settings_panel);
+						if (result == JFileChooser.APPROVE_OPTION) {
+							File selectedFile = chooser.getSelectedFile();
+							directory.setText(selectedFile.getAbsolutePath());
+							competition.inputDir = directory.getText();
+						}
 					}
-	            });
-	            settings_panel.add(button_change);
-	            
-	            // add panel to frame
-	            settings_frame.add(settings_panel);
-	            settings_panel.setVisible(true);  
+				});
+				settings_panel.add(button_change);
+
+				// add panel to frame
+				settings_frame.add(settings_panel);
+				settings_panel.setVisible(true);
 			}
 		}
 	}
 
 	// unused implemented methods
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
-	public void mousePressed(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	public void mouseExited(MouseEvent e) {
+	}
+
+	public void mousePressed(MouseEvent e) {
+	}
+
+	public void mouseReleased(MouseEvent e) {
+	}
 }

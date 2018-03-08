@@ -96,12 +96,12 @@ public class ContinueProcessingData extends TimerTask implements Serializable {
 				if (!competition.matches
 						.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
 						.botExists(data.get(4)[0]))
-					error = "Error. Invalid Team Number. File Name: " + testFile.getName();
+					error = "Error. Invalid Team Number. File Name: " + testFile.getName() + "Number:" + data.get(4)[0];
 				
 				if (!competition.matches
 						.get(Integer.parseInt(data.get(0)[1].substring(0, data.get(0)[1].indexOf("-"))) - 1)
 						.botExists(data.get(5)[0]))
-					error = "Error. Invalid Team Number. File Name: " + testFile.getName();
+					error = "Error. Invalid Team Number. File Name: " + testFile.getName() + "Number:" + data.get(5)[0];
 				
 				// check if input is a number
 				for (int j = 0; j <= 9; j++)
