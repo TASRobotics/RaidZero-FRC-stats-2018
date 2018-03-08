@@ -1,6 +1,6 @@
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
@@ -10,18 +10,11 @@ import javax.swing.JFrame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYTextAnnotation;
-import org.jfree.chart.axis.AxisLocation;
-import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.block.BlockBorder;
-import org.jfree.chart.plot.CombinedDomainXYPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.DefaultHighLowDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -30,7 +23,7 @@ public class DataChart {
 	private Robot robot;
 	private JFrame frame;
 	private ArrayList<String[]> data;
-	private final int WIDTH = 900, HEIGHT = 500;
+	private final int WIDTH = 1400, HEIGHT = 500;
 
 	public DataChart(Competition competition, String t) {
 
@@ -68,104 +61,156 @@ public class DataChart {
 
 	private void initCharts() {
 
-		JFreeChart chart = createChart();
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-		frame.add(chartPanel);
+		ChartPanel chartPanel = new ChartPanel(createChart(0));
+		ChartPanel chartPanel2 = new ChartPanel(createChart(1));
+		chartPanel.setBorder(BorderFactory.createEmptyBorder());
+		frame.getContentPane().setLayout(new BorderLayout());
 
-		frame.pack();
+		frame.add(chartPanel, BorderLayout.LINE_START);
+		frame.add(chartPanel2, BorderLayout.LINE_END);
 
 	}
 
-	private XYDataset createDataset(int which) {
+	private XYSeries createDataset(int which) {
 		XYSeries series = null;
 		System.out.println("SIZE: " + data.size());
-		for (int y = 0; y < data.size(); y++) {
-			if (which == 1) {
 
-				series = new XYSeries("Auto Switch");
+		if (which == 1) {
 
+			series = new XYSeries("Auto Switch");
+
+			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
+			}
 
-			} else if (which == 2) {
+		} else if (which == 2) {
 
-				series = new XYSeries("Auto Scale");
-
+			series = new XYSeries("Auto Scale");
+			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
+			}
 
+		} else if (which == 4) {
+			series = new XYSeries("Switch Red");
 
-			} else if (which == 4) {
-				series = new XYSeries("Switch Red");
-
+			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
+			}
 
-			} else if (which == 5) {
-				series = new XYSeries("Tele Scale");
-
+		} else if (which == 5) {
+			series = new XYSeries("Tele Scale");
+			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
+			}
 
-			} else if (which == 6) {
-				series = new XYSeries("Switch Blue");
+		} else if (which == 6) {
+			series = new XYSeries("Switch Blue");
 
+			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
-
-			} else if (which == 8) {
-				series = new XYSeries("Climb");
-
+			}
+		} else if (which == 8) {
+			series = new XYSeries("Climb");
+			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
+			}
 
+		
+	}
+
+	return series;
+
+	}
+
+	private JFreeChart createChart(int which) {
+
+		JFreeChart chart = null;
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
+		if (which == 0) {
+
+			dataset.addSeries(createDataset(1));
+			dataset.addSeries(createDataset(2));
+
+			chart = ChartFactory.createXYLineChart("Auto Stats", "Competition", "Values", dataset,
+					PlotOrientation.VERTICAL, true, true, false);
+			XYPlot plot = chart.getXYPlot();
+
+			XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+
+			renderer.setSeriesPaint(0, Color.RED);
+			renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+
+			renderer.setSeriesPaint(1, Color.BLUE);
+			renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+
+			plot.setRenderer(renderer);
+			plot.setBackgroundPaint(Color.white);
+
+			plot.setRangeGridlinesVisible(false);
+			plot.setDomainGridlinesVisible(false);
+
+			chart.getLegend().setFrame(BlockBorder.NONE);
+
+		} else if (which == 1) {
+			dataset.addSeries(createDataset(4));
+			dataset.addSeries(createDataset(5));
+			dataset.addSeries(createDataset(6));
+			dataset.addSeries(createDataset(8));
+
+			chart = ChartFactory.createXYLineChart("Tele Stats", "Competition", "Values", dataset,
+					PlotOrientation.VERTICAL, true, true, false);
+			XYPlot plot = chart.getXYPlot();
+
+			XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+
+			renderer.setSeriesPaint(0, Color.RED);
+			renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+
+			renderer.setSeriesPaint(1, Color.BLUE);
+			renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+
+			renderer.setSeriesPaint(2, Color.GREEN);
+			renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+
+			renderer.setSeriesPaint(3, Color.PINK);
+			renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+
+			plot.setRenderer(renderer);
+			plot.setBackgroundPaint(Color.white);
+
+			plot.setRangeGridlinesVisible(false);
+			plot.setDomainGridlinesVisible(false);
+
+			chart.getLegend().setFrame(BlockBorder.NONE);
+		}
+
+		return chart;
+
+	}
+
+	private double getLowestLow(DefaultHighLowDataset dataset) {
+		double lowest;
+		lowest = dataset.getLowValue(0, 0);
+		for (int i = 1; i < dataset.getItemCount(0); i++) {
+			if (dataset.getLowValue(0, i) < lowest) {
+				lowest = dataset.getLowValue(0, i);
 			}
 		}
 
-		XYSeriesCollection dataset = new XYSeriesCollection();
-
-		dataset.addSeries(series);
-
-		return dataset;
+		return lowest;
 	}
 
-	private JFreeChart createChart() {
+	private double getHighestHigh(DefaultHighLowDataset dataset) {
+		double highest;
+		highest = dataset.getHighValue(0, 0);
+		for (int i = 1; i < dataset.getItemCount(0); i++) {
+			if (dataset.getLowValue(0, i) > highest) {
+				highest = dataset.getHighValue(0, i);
+			}
+		}
 
-		// create subplot 1...
-		final XYDataset data1 = createDataset(1);
-		final XYItemRenderer renderer1 = new StandardXYItemRenderer();
-		final NumberAxis rangeAxis1 = new NumberAxis("Matches");
-		final XYPlot subplot1 = new XYPlot(data1, null, rangeAxis1, renderer1);
-		subplot1.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
-
-		subplot1.setDataset(1, createDataset(2));
-		subplot1.setRenderer(1, new StandardXYItemRenderer());
-		// create subplot 2...
-		final XYDataset data2 = createDataset(4);
-		final XYItemRenderer renderer2 = new StandardXYItemRenderer();
-		final NumberAxis rangeAxis2 = new NumberAxis("Matches");
-		rangeAxis2.setAutoRangeIncludesZero(false);
-		final XYPlot subplot2 = new XYPlot(data2, null, rangeAxis2, renderer2);
-		subplot2.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
-
-		subplot2.setDataset(1, createDataset(5));
-		subplot2.setDataset(1, createDataset(6));
-		subplot2.setDataset(1, createDataset(8));
-
-		final NumberAxis axis2 = new NumberAxis("Values");
-		axis2.setAutoRangeIncludesZero(false);
-		subplot2.setDomainAxis(1, axis2);
-		subplot2.setDomainAxisLocation(1, AxisLocation.TOP_OR_LEFT);
-		subplot2.setRenderer(1, new StandardXYItemRenderer());
-		subplot2.mapDatasetToRangeAxis(1, 1);
-
-		// parent plot...
-		final CombinedDomainXYPlot plot = new CombinedDomainXYPlot(new NumberAxis("Values"));
-		plot.setGap(10.0);
-
-		// add the subplots...
-		plot.add(subplot1, 1);
-		plot.add(subplot2, 1);
-		plot.setOrientation(PlotOrientation.HORIZONTAL);
-
-		// return a new chart containing the overlaid plot...
-		return new JFreeChart("Robot Data", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-
+		return highest;
 	}
 
 }
