@@ -22,6 +22,7 @@ public class Robot implements Serializable {
     int max_t_switch;
     int max_e_z;
     
+    
     // constructor
     public Robot(String t){
         name = t;
