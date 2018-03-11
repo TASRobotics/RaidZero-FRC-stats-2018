@@ -9,6 +9,10 @@ import org.jsoup.select.Elements;
 
 public class Competition implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String name;
 	String inputDir;
 	String url;

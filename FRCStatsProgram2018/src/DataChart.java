@@ -27,7 +27,7 @@ public class DataChart {
 
 	public DataChart(Competition competition, String t) {
 
-		frame = new JFrame("Data Chart");
+		frame = new JFrame("Team Number: " + t);
 		robot = competition.getBot(t);
 		this.data = robot.data;
 
@@ -36,7 +36,7 @@ public class DataChart {
 		frame.setBounds((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() - WIDTH,
 				(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - HEIGHT, WIDTH, HEIGHT);
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 
 	}
@@ -77,7 +77,7 @@ public class DataChart {
 
 		if (which == 1) {
 
-			series = new XYSeries("Auto Switch");
+			series = new XYSeries("Auto Scale");
 
 			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
@@ -85,14 +85,7 @@ public class DataChart {
 
 		} else if (which == 2) {
 
-			series = new XYSeries("Auto Scale");
-			for (int y = 0; y < data.size(); y++) {
-				series.add(y, Integer.parseInt(data.get(y)[which]));
-			}
-
-		} else if (which == 4) {
-			series = new XYSeries("Switch Red");
-
+			series = new XYSeries("Auto Switch");
 			for (int y = 0; y < data.size(); y++) {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
 			}
@@ -104,10 +97,10 @@ public class DataChart {
 			}
 
 		} else if (which == 6) {
-			series = new XYSeries("Switch Blue");
+			series = new XYSeries("Tele Switch");
 
 			for (int y = 0; y < data.size(); y++) {
-				series.add(y, Integer.parseInt(data.get(y)[which]));
+				series.add(y, (Integer.parseInt(data.get(y)[which]) + Integer.parseInt(data.get(y)[which])) / 2);
 			}
 		} else if (which == 8) {
 			series = new XYSeries("Climb");
@@ -115,10 +108,9 @@ public class DataChart {
 				series.add(y, Integer.parseInt(data.get(y)[which]));
 			}
 
-		
-	}
+		}
 
-	return series;
+		return series;
 
 	}
 
@@ -153,7 +145,6 @@ public class DataChart {
 			chart.getLegend().setFrame(BlockBorder.NONE);
 
 		} else if (which == 1) {
-			dataset.addSeries(createDataset(4));
 			dataset.addSeries(createDataset(5));
 			dataset.addSeries(createDataset(6));
 			dataset.addSeries(createDataset(8));
@@ -171,9 +162,6 @@ public class DataChart {
 			renderer.setSeriesStroke(1, new BasicStroke(2.0f));
 
 			renderer.setSeriesPaint(2, Color.GREEN);
-			renderer.setSeriesStroke(1, new BasicStroke(2.0f));
-
-			renderer.setSeriesPaint(3, Color.PINK);
 			renderer.setSeriesStroke(1, new BasicStroke(2.0f));
 
 			plot.setRenderer(renderer);
