@@ -142,7 +142,7 @@ public class DataChart {
 			plot.setRangeGridlinesVisible(false);
 			plot.setDomainGridlinesVisible(false);
 
-			chart.getLegend().setFrame(BlockBorder.NONE);
+			//chart.getLegend().setFrame(BlockBorder.NONE);
 
 		} else if (which == 1) {
 			dataset.addSeries(createDataset(5));
@@ -170,7 +170,7 @@ public class DataChart {
 			plot.setRangeGridlinesVisible(false);
 			plot.setDomainGridlinesVisible(false);
 
-			chart.getLegend().setFrame(BlockBorder.NONE);
+			//chart.getLegend().setFrame(BlockBorder.NONE);
 		}
 
 		return chart;

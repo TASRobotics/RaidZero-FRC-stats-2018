@@ -22,6 +22,7 @@ public class Robot implements Serializable {
     int max_t_switch;
     int max_e_z;
     
+    
     // constructor
     public Robot(String t){
         name = t;
@@ -70,27 +71,35 @@ public class Robot implements Serializable {
     	
     	//update averages
     	double sum_a_scale = 0, sum_a_switch = 0, sum_a_cross = 0, sum_t_scale = 0, 
-    			sum_t_switch_r = 0, sum_t_switch_b = 0, sum_e_z = 0, sum_c = 0;
+    			sum_t_switch_r = 0, sum_t_switch_b = 0, sum_e_z = 0, sum_c = 0, 
+    			c_attempt = 0, a_switch_attempt = 0, a_scale_attempt = 0;
     	for(String[] i: data) {
-    		sum_a_scale += Integer.parseInt(i[1]);
-    		sum_a_switch += Integer.parseInt(i[2]);
+    		if(Integer.parseInt(i[1]) > 0) sum_a_scale += 1;
+    		if(Integer.parseInt(i[1]) > 0 || Integer.parseInt(i[1]) == -1) a_scale_attempt += 1;
+    		
+    		if(Integer.parseInt(i[2]) > 0) sum_a_switch += 1;
+    		if(Integer.parseInt(i[2]) > 0 || Integer.parseInt(i[2]) == -1) a_switch_attempt += 1;
+    		
     		sum_a_cross += Integer.parseInt(i[3]);
     		sum_t_switch_r += Integer.parseInt(i[4]);
     		sum_t_scale += Integer.parseInt(i[5]); 
     		sum_t_switch_b += Integer.parseInt(i[6]);
     		sum_e_z += Integer.parseInt(i[7]);
-    		sum_c += Integer.parseInt(i[8]);
+    		
+    		if(Integer.parseInt(i[8]) == 1) sum_c += 1;
+    		if(Integer.parseInt(i[8]) == 1 || Integer.parseInt(i[8]) == -1) c_attempt += 1;
+    		
     		if(Integer.parseInt(i[9]) == 1) floor = true;
     	}
     	System.out.println("data size: " + data.size());
-    	avg_a_scale = sum_a_scale/data.size();
-    	avg_a_switch = sum_a_switch/data.size();
+    	if(a_scale_attempt != 0) avg_a_scale = sum_a_scale/a_scale_attempt; else avg_a_scale = 0;
+    	if(a_switch_attempt != 0) avg_a_switch = sum_a_switch/a_switch_attempt; else avg_a_switch = 0;
     	avg_a_cross = sum_a_cross/data.size();
     	avg_t_switch_r = sum_t_switch_r/data.size();
     	avg_t_scale = sum_t_scale/data.size();
     	avg_t_switch_b = sum_t_switch_b/data.size();
     	avg_e_z = sum_e_z/data.size();
-    	avg_c = sum_c/data.size();
+    	if(c_attempt != 0) avg_c = sum_c/c_attempt; else avg_c = 0;
     }
     
     // return the averages in a good-looking format

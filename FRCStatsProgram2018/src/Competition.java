@@ -32,7 +32,6 @@ public class Competition implements Serializable {
 	// if robot with name exists, return true
 	public boolean botExists(String t) {
 		for (Robot bot: robots) {
-			System.out.println(bot.name.substring(0, bot.name.indexOf(" ")));
 			if(bot.name.substring(0, bot.name.indexOf(" ")).equals(t)) 
 				return true;
 		}
